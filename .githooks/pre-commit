@@ -1,0 +1,26 @@
+#!/bin/bash
+
+echo "running pre-commit scripts" 
+
+if git rev-parse --verify HEAD >/dev/null 2>&1; then
+  against=HEAD
+else
+  against=$(git hash-object -t tree /dev/null)
+fi
+
+project_path=$(git rev-parse --show-toplevel)
+files=$(git diff-index --name-only --cached --diff-filter=AM $against | grep -E '^.*\.php$')
+
+for file in $files; do
+  php -l $file
+  result=$?
+  if [ $result -ne 0 ]; then
+    exit 1
+  fi
+done
+
+if [ -n "$files" ]; then
+  echo "php-cs-fixer runs on" $files
+  $project_path/vendor/bin/php-cs-fixer fix --config=$project_path/.php_cs.dist $files >/dev/null 2>&1
+  git add ${files}
+fi
