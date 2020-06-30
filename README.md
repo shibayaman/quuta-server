@@ -5,6 +5,13 @@
 **重要**:クローンしたらまず
 
 ```
-git config core.hooksPath .githooks
+$ git config core.hooksPath .githooks
 ```
-を実行してくださいコミット時にformatterが作動します。
+を実行してください。コミット時にformatterが作動します。
+
+それからそれから
+```
+$ composer install
+$ php artisan key:generate
+```
+を実行してください。
