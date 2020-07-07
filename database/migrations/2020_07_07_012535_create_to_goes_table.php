@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateToGoTable extends Migration
+class CreateToGoesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateToGoTable extends Migration
      */
     public function up()
     {
-        Schema::create('to_go', function (Blueprint $table) {
+        Schema::create('to_goes', function (Blueprint $table) {
             $table->bigIncrements('to_go_id');
             $table->string('user_id');
             $table->string('restaurant_id');
@@ -32,6 +32,6 @@ class CreateToGoTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('to_go');
+        Schema::dropIfExists('to_goes');
     }
 }
