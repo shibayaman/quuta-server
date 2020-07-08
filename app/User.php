@@ -3,37 +3,46 @@
 namespace App;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
     use Notifiable;
+    use SoftDeletes;
+    
+    protected $primaryKey = 'user_id';
+    protected $keyType = 'string';
+    public $incrementing = false;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'name', 'email', 'password',
-    ];
+    public function sex()
+    {
+        return $this->belongsTo(Sex::class, 'sex_id');
+    }
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
+    public function post()
+    {
+        return $this->hasMany(Post::class, 'user_id');
+    }
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    public function good()
+    {
+        return $this->hasMany(Good::class, 'user_id');
+    }
+
+    public function follow()
+    {
+        return $this->hasMany(Follower::class, 'user_id');
+    }
+
+    public function comment()
+    {
+        return $this->hasMany(Comment::class, 'user_id');
+    }
+
+    public function to_go()
+    {
+        return $this->hasMany(ToGo::class, 'user_id');
+    }
 }
