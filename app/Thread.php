@@ -1,0 +1,22 @@
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+class Thread extends Model
+{
+    protected $primaryKey = 'thread_id';
+    public $timestamps = false;
+
+    public function post()
+    {
+        return $this->belongsTo(Post::class, 'post_id');
+    }
+
+    public function comment()
+    {
+        return $this->hasMany(Comment::class, 'thread_id');
+    }
+}
