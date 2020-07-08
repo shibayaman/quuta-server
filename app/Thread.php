@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Thread extends Model
 {
+    use SoftDeletes;
+    
     protected $primaryKey = 'thread_id';
     public $timestamps = false;
 

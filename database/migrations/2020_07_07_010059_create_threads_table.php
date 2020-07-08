@@ -17,6 +17,7 @@ class CreateThreadsTable extends Migration
             $table->bigIncrements('thread_id');
             $table->unsignedBigInteger('comment_id');
             $table->unsignedBigInteger('post_id');
+            $table->softDeletes();
             $table->foreign('post_id')
                 ->references('post_id')->on('posts')
                 ->onDelete('cascade');
