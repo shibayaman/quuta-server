@@ -31,9 +31,14 @@ class User extends Authenticatable
         return $this->hasMany(Good::class, 'user_id');
     }
 
-    public function follow()
+    public function following()
     {
-        return $this->hasMany(Follower::class, 'user_id');
+        return $this->hasMany(Follow::class, 'user_id');
+    }
+
+    public function followed()
+    {
+        return $this->hasMany(Follow::class, 'follow_user_id');
     }
 
     public function comment()
