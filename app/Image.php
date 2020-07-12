@@ -8,6 +8,7 @@ class Image extends Model
 {
     protected $primaryKey = 'image_id';
     public $incrementing = false;
+    public $timestamps = false;
 
     public function post()
     {
