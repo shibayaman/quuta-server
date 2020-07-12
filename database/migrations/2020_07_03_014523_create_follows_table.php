@@ -18,7 +18,6 @@ class CreateFollowsTable extends Migration
             $table->string('user_id');
             $table->string('follow_user_id');
             $table->boolean('subscription_flag');
-            $table->timestamps();
             $table->foreign('user_id')
                 ->references('user_id')->on('users')
                 ->onDelete('cascade');
