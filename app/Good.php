@@ -8,6 +8,7 @@ class Good extends Model
 {
     protected $primaryKey = 'good_id';
     public $incrementing = false;
+    public $timestamps = false;
 
     public function post()
     {
