@@ -18,13 +18,13 @@ class CreateUsersTable extends Migration
             $table->string('username');
             $table->string('email')->unique();
             $table->string('password');
-            $table->timestamp('password_updated_at');
+            $table->timestamp('password_updated_at')->nullable();
             $table->boolean('private_flag');
             $table->date('birthday_date');
             $table->unsignedInteger('sex_id')->nullable();
             $table->string('icon_url');
-            $table->string('password_reset_token');
-            $table->timestamp('token_expires_at');
+            $table->string('password_reset_token')->nullable();
+            $table->timestamp('token_expires_at')->nullable();
             $table->string('description');
             $table->timestamps();
             $table->softDeletes();
