@@ -22,7 +22,7 @@ class CreatePostsTable extends Migration
             $table->unsignedInteger('comment_count');
             $table->string('restaurant_id');
             $table->string('restaurant_name');
-            $table->string('restaurnta_address');
+            $table->string('restaurant_address');
             $table->softDeletes();
             $table->timestamps();
             $table->foreign('user_id')
