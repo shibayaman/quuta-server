@@ -7,6 +7,11 @@ class UserSeeder extends Seeder
 {
     public function run()
     {
-        factory(User::class, 10)->create();
+        factory(User::class, 9)->create();
+
+        $me = factory(User::class)->create([
+            'email' => 'quuta@quuta.com',
+            'password' => Hash::make('quuta'),
+        ]);
     }
 }
