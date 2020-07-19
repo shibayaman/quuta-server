@@ -20,13 +20,14 @@ class TimelineController extends Controller
         //temporarily using first user
         $user = \App\User::first();
 
-        $postQuery = DB::table('posts')
-            ->join('follows', 'posts.user_id', 'follows.follow_user_id')
-            ->join('users', 'follows.follow_user_id', 'users.user_id')
-            ->where('follows.user_id', $user->user_id)
+        $follow_user_ids = $user->following->pluck('follow_user_id');
+        $postQuery = Post::wherein('user_id', $follow_user_ids)
             ->limit($count)
-            ->orderby("posts.post_id");
-            
+            ->orderby("posts.post_id")
+            ->with(['good' => function ($query) use ($user) {
+                $query->where('user_id', $user->user_id);
+            }]);
+        
         $posts = $this->addPostIdConstraint($postQuery, $since_id, $until_id, $count)
             ->get();
 
