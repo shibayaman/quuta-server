@@ -20,4 +20,5 @@ Route::group(['prefix' => 'auth'], function ($router) {
     Route::get('user', 'Auth\AuthController@user');
 });
 
-Route::get('/timeline', 'TimelineController@homeTimeline');
+Route::get('/home_timeline', 'TimelineController@homeTimeline');
+Route::get('/user_timeline', 'TimelineController@userTimeline');
