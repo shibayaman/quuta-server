@@ -17,7 +17,7 @@ class TimelineController extends Controller
         //temporarily using first user
         $user = \App\User::first();
 
-        $follow_user_ids = $user->following->pluck('follow_user_id');
+        $follow_user_ids = $user->following()->pluck('follow_user_id');
         $postQuery = Post::wherein('user_id', $follow_user_ids)
             ->with(['good' => function ($query) use ($user) {
                 $query->where('user_id', $user->user_id);
