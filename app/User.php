@@ -16,6 +16,22 @@ class User extends Authenticatable implements JWTSubject
     protected $keyType = 'string';
     public $incrementing = false;
 
+    public function homeTimeline($sinceId = null, $untilId = null, $count = null)
+    {
+        return Post::getBetween($sinceId, $untilId, $count)
+            ->whereIn('user_id', $this->following()->pluck('follow_user_id'))
+            ->withGoodedByUser($this->user_id)
+            ->get();
+    }
+
+    public function userTimeline($user_id, $sinceId = null, $untilId = null, $count = null)
+    {
+        return Post::getBetween($sinceId, $untilId, $count)
+            ->where('user_id', $user_id)
+            ->withGoodedByUser($this->user_id)
+            ->get();
+    }
+
     public function getJWTIdentifier()
     {
         return $this->getKey();
