@@ -11,6 +11,31 @@ class Post extends Model
 
     protected $primaryKey = 'post_id';
 
+    public function scopeGetBetween($query, $sinceId, $untilId, $count = null)
+    {
+        $keyName = $this->getQualifiedKeyName();
+
+        if ($sinceId) {
+            $query->where($keyName, '>', $sinceId);
+        }
+
+        if ($untilId) {
+            $query->where($keyName, '<=', $untilId);
+        }
+
+        if ($count) {
+            $query->limit($count);
+            $query->orderBy($keyName, 'desc');
+        }
+    }
+
+    public function scopeWithGoodedByUser($postQuery, $user_id)
+    {
+        $postQuery->with(['good' => function ($goodQuery) use ($user_id) {
+            $goodQuery->where('user_id', $user_id);
+        }]);
+    }
+    
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
