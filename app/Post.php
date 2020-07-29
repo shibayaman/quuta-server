@@ -11,6 +11,10 @@ class Post extends Model
 
     protected $primaryKey = 'post_id';
 
+    protected $casts = [
+        'like_flag' => 'bool'
+    ];
+
     public function scopeGetBetween($query, $sinceId, $untilId, $count = null)
     {
         $keyName = $this->getQualifiedKeyName();
