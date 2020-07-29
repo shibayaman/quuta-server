@@ -21,6 +21,7 @@ class User extends Authenticatable implements JWTSubject
         return Post::getBetween($sinceId, $untilId, $count)
             ->whereIn('user_id', $this->following()->pluck('follow_user_id'))
             ->withGoodedByUser($this->user_id)
+            ->with('image')
             ->get();
     }
 
@@ -29,6 +30,7 @@ class User extends Authenticatable implements JWTSubject
         return Post::getBetween($sinceId, $untilId, $count)
             ->where('user_id', $user_id)
             ->withGoodedByUser($this->user_id)
+            ->with('image')
             ->get();
     }
 
