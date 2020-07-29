@@ -20,6 +20,7 @@ class Timeline extends JsonResource
             'good_count' => $this->good_count,
             'comment_count' => $this->comment_count,
             'gooded' => $this->good->isNotEmpty(),
+            'images' => Image::collection($this->image),
             'restaurant' => [
                 'restaurant_id' => $this->restaurant_id,
                 'restaurant_name' => $this->restaurant_name,
