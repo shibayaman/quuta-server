@@ -12,9 +12,9 @@ class Timeline extends JsonResource
             'post_id' => $this->post_id,
             'content' => $this->content,
             'user' => [
-                'user_id' => $this->user_id,
-                'username' => $this->username,
-                'user_icon' => $this->icon_url,
+                'user_id' => $this->user->user_id,
+                'username' => $this->user->username,
+                'user_icon' => $this->user->icon_url,
             ],
             'like_flag' => $this->like_flag,
             'good_count' => $this->good_count,

@@ -22,6 +22,7 @@ class User extends Authenticatable implements JWTSubject
             ->whereIn('user_id', $this->following()->pluck('follow_user_id'))
             ->withGoodedByUser($this->user_id)
             ->with('image')
+            ->with('user')
             ->get();
     }
 
@@ -31,6 +32,7 @@ class User extends Authenticatable implements JWTSubject
             ->where('user_id', $user_id)
             ->withGoodedByUser($this->user_id)
             ->with('image')
+            ->with('user')
             ->get();
     }
 
