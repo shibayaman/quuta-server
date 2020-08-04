@@ -18,22 +18,28 @@ class User extends Authenticatable implements JWTSubject
 
     public function homeTimeline($sinceId = null, $untilId = null, $count = null)
     {
-        return Post::getBetween($sinceId, $untilId, $count)
-            ->whereIn('user_id', $this->following()->pluck('follow_user_id'))
-            ->withGoodedByUser($this->user_id)
-            ->with('image')
-            ->with('user')
-            ->get();
+        return $this->getPosts($sinceId, $untilId, $count, function ($query) {
+            $query->whereIn('user_id', $this->following()->pluck('follow_user_id'));
+        });
     }
 
-    public function userTimeline($user_id, $sinceId = null, $untilId = null, $count = null)
+    public function userTimeline($userId, $sinceId = null, $untilId = null, $count = null)
     {
-        return Post::getBetween($sinceId, $untilId, $count)
-            ->where('user_id', $user_id)
+        return $this->getPosts($sinceId, $untilId, $count, function ($query) use ($userId) {
+            $query->where('user_id', $userId);
+        });
+    }
+
+    public function getPosts($sinceId, $untilId, $count, callable $callable = null)
+    {
+        $query = Post::getBetween($sinceId, $untilId, $count)
             ->withGoodedByUser($this->user_id)
             ->with('image')
-            ->with('user')
-            ->get();
+            ->with('user');
+
+        $callable && $callable($query);
+
+        return $query->get();
     }
 
     public function getJWTIdentifier()
