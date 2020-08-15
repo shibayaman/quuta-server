@@ -14,7 +14,7 @@ class UserImageSeeder extends Seeder
     public function run()
     {
         factory(User::class, 2)->create()->each(function ($user) {
-            $user->image()->saveMany(factory(Image::class, 2)->make());
+            $user->images()->saveMany(factory(Image::class, 2)->make());
         });
     }
 }
