@@ -86,4 +86,9 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(ToGo::class, 'user_id');
     }
+    
+    public function image()
+    {
+        return $this->hasMany(Image::class, 'user_id');
+    }
 }

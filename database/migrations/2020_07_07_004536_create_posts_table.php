@@ -17,9 +17,9 @@ class CreatePostsTable extends Migration
             $table->bigIncrements('post_id');
             $table->string('content');
             $table->string('user_id');
-            $table->boolean('like_flag');
-            $table->unsignedInteger('good_count');
-            $table->unsignedInteger('comment_count');
+            $table->boolean('like_flag')->default(false);
+            $table->unsignedInteger('good_count')->default(0);
+            $table->unsignedInteger('comment_count')->default(0);
             $table->string('restaurant_id');
             $table->string('restaurant_name');
             $table->string('restaurant_address');
