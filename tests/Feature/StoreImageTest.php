@@ -24,33 +24,39 @@ class StoreImageTest extends TestCase
     /** @test */
     public function itSavesUploadedImage()
     {
+        $user = User::first();
         $file = UploadedFile::fake()->image('sample.jpg');
-        $response = $this->postJson('/api/image', [
+        $response = $this->actingAs($user)->postJson('/api/image', [
             'image' => $file
         ]);
 
         $response->assertCreated();
         $response->assertJsonStructure(['image_id']);
-        $this->assertEquals(Image::count(), 1);
+
+        $image = Image::all();
+        $this->assertEquals($image->count(), 1);
+        $this->assertEquals($image[0]->user_id, $user->user_id);
         Storage::disk('local')->assertExists('public/' . $file->hashName());
     }
 
     /** @test */
     public function itAllowsOnlyJPEGAndPNGFile()
     {
+        $user = User::first();
+
         $jpeg = UploadedFile::fake()->image('sample.jpeg');
         $png = UploadedFile::fake()->image('sample.png');
         $gif = UploadedFile::fake()->image('sample.gif');
 
-        $this->postJson('/api/image', [
+        $this->actingAs($user)->postJson('/api/image', [
             'image' => $jpeg
         ])->assertCreated();
 
-        $this->postJson('/api/image', [
+        $this->actingAs($user)->postJson('/api/image', [
             'image' => $png
         ])->assertCreated();
 
-        $this->postJson('/api/image', [
+        $this->actingAs($user)->postJson('/api/image', [
             'image' => $gif
         ])->assertJsonValidationErrors(['image']);
     }
