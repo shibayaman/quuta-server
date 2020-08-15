@@ -4,12 +4,14 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 
 class Post extends Model
 {
     use SoftDeletes;
 
     protected $primaryKey = 'post_id';
+    protected $guarded = [];
 
     protected $casts = [
         'like_flag' => 'bool'
@@ -38,6 +40,20 @@ class Post extends Model
         $postQuery->with(['good' => function ($goodQuery) use ($user_id) {
             $goodQuery->where('user_id', $user_id);
         }]);
+    }
+
+    public static function createAndLinkImage($attributes, $images)
+    {
+        return DB::transaction(function () use ($attributes, $images) {
+            $post = static::create($attributes);
+            $post->linkImage($images);
+            return $post;
+        });
+    }
+
+    public function linkImage($images)
+    {
+        $images->each->linkPost($this->post_id);
     }
     
     public function user()
