@@ -10,7 +10,7 @@ class ImageSeeder extends Seeder
     {
         $posts = Post::all();
         $posts->each(function ($post) {
-            $post->image()->createMany(
+            $post->images()->createMany(
                 factory(Image::class, 2)->make(['user_id' => $post->user_id])->toArray()
             );
         });

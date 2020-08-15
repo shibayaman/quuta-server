@@ -50,13 +50,13 @@ class PostTest extends TestCase
         $post = Post::first();
 
         $post = Post::withGoodedByUser($user->user_id)->find($post->getKey());
-        $this->assertTrue($post->relationLoaded('good'));
-        $this->assertTrue($post->good->isEmpty());
+        $this->assertTrue($post->relationLoaded('goods'));
+        $this->assertTrue($post->goods->isEmpty());
 
-        $post->good()->save(factory(Good::class)->make(['user_id' => $user->user_id]));
-        $post->good()->save(factory(Good::class)->make(['user_id' => $other->user_id]));
+        $post->goods()->save(factory(Good::class)->make(['user_id' => $user->user_id]));
+        $post->goods()->save(factory(Good::class)->make(['user_id' => $other->user_id]));
 
         $post = Post::withGoodedByUser($user->user_id)->find($post->getKey());
-        $this->assertEquals(1, $post->good->count());
+        $this->assertEquals(1, $post->goods->count());
     }
 }

@@ -37,7 +37,7 @@ class Post extends Model
 
     public function scopeWithGoodedByUser($postQuery, $user_id)
     {
-        $postQuery->with(['good' => function ($goodQuery) use ($user_id) {
+        $postQuery->with(['goods' => function ($goodQuery) use ($user_id) {
             $goodQuery->where('user_id', $user_id);
         }]);
     }
@@ -61,17 +61,17 @@ class Post extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
     
-    public function thread()
+    public function threads()
     {
         return $this->hasMany(Thread::class, 'post_id');
     }
 
-    public function good()
+    public function goods()
     {
         return $this->hasMany(Good::class, 'post_id');
     }
     
-    public function image()
+    public function images()
     {
         return $this->hasMany(Image::class, 'post_id');
     }

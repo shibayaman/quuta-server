@@ -9,11 +9,11 @@ class ThreadSeeder extends Seeder
 {
     public function run()
     {
-        $users = User::with('post')->get();
+        $users = User::with('posts')->get();
 
         $users->each(function ($user) {
-            $user->post->random(3)->each(function ($post) {
-                $post->thread()->createMany(
+            $user->posts->random(3)->each(function ($post) {
+                $post->threads()->createMany(
                     factory(Thread::class, 2)->make()->toArray()
                 );
             });

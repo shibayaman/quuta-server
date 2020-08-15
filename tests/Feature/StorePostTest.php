@@ -24,7 +24,7 @@ class StorePostTest extends TestCase
     public function itSavesPostAndLinkImages()
     {
         $user = User::first();
-        $imageIds = $user->image()->pluck('image_id');
+        $imageIds = $user->images()->pluck('image_id');
 
         $response = $this->actingAs($user)->postJson('/api/post', [
             'content' => 'this will succeed',
@@ -50,7 +50,7 @@ class StorePostTest extends TestCase
         $user = $users[0];
         $other = $users[1];
 
-        $imageIdsOfOther = $other->image()->pluck('image_id');
+        $imageIdsOfOther = $other->images()->pluck('image_id');
 
         $response = $this->actingAs($user)->postJson('/api/post', [
             'content' => 'this will fail',
@@ -66,10 +66,10 @@ class StorePostTest extends TestCase
     {
         $user = User::first();
 
-        $post = $user->post()->save(factory(Post::class)->make());
-        $image = $user->image[0];
+        $post = $user->posts()->save(factory(Post::class)->make());
+        $image = $user->images[0];
         $image->post_id = $post->post_id;
-        $user->image[0]->save();
+        $image->save();
 
         $response = $this->actingAs($user)->postJson('/api/post', [
             'content' => 'this will fail',

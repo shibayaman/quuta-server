@@ -12,7 +12,7 @@ class UserPostSeeder extends Seeder
     {
         $users = factory(User::class, 3)->create();
         $users->each(function ($user) {
-            $user->post()->saveMany(factory(Post::class, 3)->make());
+            $user->posts()->saveMany(factory(Post::class, 3)->make());
         });
     }
 }

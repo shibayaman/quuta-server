@@ -16,7 +16,7 @@ class CommentSeeder extends Seeder
             $commentingUsers = $users->random(2)->shuffle();
             
             $comments = $users->random(2)->map(function ($user) use ($thread) {
-                return $thread->comment()->save(
+                return $thread->comments()->save(
                     factory(Comment::class)->make(['user_id' => $user->user_id])
                 );
             });

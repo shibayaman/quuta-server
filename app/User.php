@@ -19,7 +19,7 @@ class User extends Authenticatable implements JWTSubject
     public function homeTimeline($sinceId = null, $untilId = null, $count = null)
     {
         return $this->getPosts($sinceId, $untilId, $count, function ($query) {
-            $query->whereIn('user_id', $this->following()->pluck('follow_user_id'));
+            $query->whereIn('user_id', $this->followings()->pluck('follow_user_id'));
         });
     }
 
@@ -34,7 +34,7 @@ class User extends Authenticatable implements JWTSubject
     {
         $query = Post::getBetween($sinceId, $untilId, $count)
             ->withGoodedByUser($this->user_id)
-            ->with('image')
+            ->with('images')
             ->with('user');
 
         $callable && $callable($query);
@@ -57,37 +57,37 @@ class User extends Authenticatable implements JWTSubject
         return $this->belongsTo(Sex::class, 'sex_id');
     }
 
-    public function post()
+    public function posts()
     {
         return $this->hasMany(Post::class, 'user_id');
     }
 
-    public function good()
+    public function goods()
     {
         return $this->hasMany(Good::class, 'user_id');
     }
 
-    public function following()
+    public function followings()
     {
         return $this->hasMany(Follow::class, 'user_id');
     }
 
-    public function followed()
+    public function followeds()
     {
         return $this->hasMany(Follow::class, 'follow_user_id');
     }
 
-    public function comment()
+    public function comments()
     {
         return $this->hasMany(Comment::class, 'user_id');
     }
 
-    public function to_go()
+    public function to_goes()
     {
         return $this->hasMany(ToGo::class, 'user_id');
     }
     
-    public function image()
+    public function images()
     {
         return $this->hasMany(Image::class, 'user_id');
     }
