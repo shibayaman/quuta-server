@@ -16,9 +16,6 @@ class GoodSeeder extends Seeder
 
             $timeline = Post::wherein('user_id', $follow_user_ids)->get();
             $timeline->random(10)->each(function ($post) use ($user) {
-                // $post->good()->save(
-                //     factory(Good::class)->make([ 'user_id' => $user->user_id ])
-                // );
                 Good::create([
                     'user_id' => $user->user_id,
                     'post_id' => $post->post_id

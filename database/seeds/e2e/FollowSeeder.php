@@ -17,8 +17,8 @@ class FollowSeeder extends Seeder
                 $user->followings()->save(
                     factory(Follow::class)->make(
                         [
-                        'follow_user_id' => $following->user_id
-                    ]
+                            'follow_user_id' => $following->user_id
+                        ]
                     )
                 );
             });
