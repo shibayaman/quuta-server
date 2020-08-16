@@ -19,7 +19,7 @@ class Follow extends Model
         return $this->belongsTo(User::class, 'follow_user_id');
     }
     
-    public function post_of_follow_user()
+    public function posts_of_follow_user()
     {
         return $this->hasMany(Post::class, 'user_id', 'follow_user_id');
     }

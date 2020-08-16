@@ -17,7 +17,7 @@ class Thread extends Model
         return $this->belongsTo(Post::class, 'post_id');
     }
 
-    public function comment()
+    public function comments()
     {
         return $this->hasMany(Comment::class, 'thread_id');
     }

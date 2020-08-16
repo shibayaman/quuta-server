@@ -26,7 +26,7 @@ class UserTest extends TestCase
 
         $this->assertEmpty($users[0]->homeTimeline()->toArray());
 
-        $users[0]->following()->save(
+        $users[0]->followings()->save(
             factory(Follow::class)->make(['follow_user_id' => $users[1]->user_id])
         );
 
@@ -59,8 +59,8 @@ class UserTest extends TestCase
         $user = User::first();
 
         $post = $user->getPosts(null, null, null)[0];
-        $this->assertTrue($post->relationLoaded('good'));
-        $this->assertTrue($post->relationLoaded('image'));
+        $this->assertTrue($post->relationLoaded('goods'));
+        $this->assertTrue($post->relationLoaded('images'));
         $this->assertTrue($post->relationLoaded('user'));
     }
 }
