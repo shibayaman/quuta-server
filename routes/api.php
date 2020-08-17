@@ -25,3 +25,4 @@ Route::get('/user_timeline', 'TimelineController@userTimeline');
 
 Route::post('/post', 'PostController@storePost');
 Route::post('/image', 'PostController@storeImage');
+Route::post('/comment/parent', 'CommentController@storeParentComment');

@@ -10,6 +10,7 @@ class Thread extends Model
     use SoftDeletes;
     
     protected $primaryKey = 'thread_id';
+    protected $guarded = [];
     public $timestamps = false;
 
     public function post()
@@ -20,5 +21,18 @@ class Thread extends Model
     public function comments()
     {
         return $this->hasMany(Comment::class, 'thread_id');
+    }
+
+    public function createParentComment($commentAttributes)
+    {
+        $comment = $this->comments()->create($commentAttributes);
+        $this->linkComment($comment->comment_id);
+        return $comment;
+    }
+
+    public function linkComment($comment_id)
+    {
+        $this->comment_id = $comment_id;
+        $this->save();
     }
 }

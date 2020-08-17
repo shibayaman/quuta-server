@@ -10,6 +10,7 @@ class Comment extends Model
     use SoftDeletes;
 
     protected $primaryKey = 'comment_id';
+    protected $guarded = [];
 
     public function thread()
     {
