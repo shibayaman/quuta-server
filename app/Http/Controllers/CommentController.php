@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreChildComment;
 use App\Http\Requests\StoreParentComment;
+use App\Comment;
 use App\Thread;
 use Auth;
 use DB;
@@ -25,5 +27,11 @@ class CommentController extends Controller
                 'user_id' => Auth::id()
             ]);
         });
+    }
+
+    public function storeChildComment(storeChildComment $request)
+    {
+        $attributes = array_merge($request->validated(), ['user_id' => Auth::id()]);
+        return Comment::create($attributes);
     }
 }
