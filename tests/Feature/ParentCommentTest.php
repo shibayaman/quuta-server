@@ -38,4 +38,18 @@ class ParentCommentTest extends TestCase
         $this->assertEquals($comment->user_id, $user->user_id);
         $this->assertEquals($comment->comment, $commentContent);
     }
+
+    /** @test */
+    public function itValidatesIfPostExistsWhenCreatingNewThread()
+    {
+        $user = factory(User::class)->create();
+
+        $response = $this->actingAs($user)->postJson('/api/comment/parent', [
+            'post_id' => 12345,
+            'comment' => 'post_id above does not exist'
+        ]);
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors(['post_id']);
+    }
 }

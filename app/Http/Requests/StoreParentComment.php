@@ -25,7 +25,7 @@ class StoreParentComment extends FormRequest
     {
         return [
            'comment' => 'required',
-           'post_id' => 'required|integer'
+           'post_id' => 'required|integer|exists:posts,post_id'
         ];
     }
 }
