@@ -22,21 +22,22 @@ class ParentCommentTest extends TestCase
         $user = User::first();
         $post = Post::first();
 
-        $commentContent = 'random comment';
         $response = $this->actingAs($user)->postJson('/api/comment/parent', [
             'post_id' => $post->post_id,
-            'comment' => $commentContent
+            'comment' => 'hello world'
         ]);
 
         $response->assertStatus(201);
         
         $thread = Thread::all();
-        $this->assertEquals($thread->count(), 1);
-        $this->assertEquals($thread[0]->post_id, $post->post_id);
+        $this->assertEquals(1, $thread->count());
+        $this->assertEquals($post->post_id, $thread[0]->post_id);
+
+        $this->assertEquals(1, Comment::count());
 
         $comment = Comment::find($thread[0]->comment_id);
-        $this->assertEquals($comment->user_id, $user->user_id);
-        $this->assertEquals($comment->comment, $commentContent);
+        $this->assertEquals($user->user_id, $comment->user_id);
+        $this->assertEquals('hello world', $comment->comment);
     }
 
     /** @test */

@@ -22,19 +22,20 @@ class ChildCommentTest extends TestCase
         $thread = factory(Thread::class)->create([
             'post_id' => Post::first()->post_id
         ]);
-
+        
         $response = $this->actingAs($user)->postJson('/api/comment/child', [
             'comment' => 'hello world',
             'thread_id' => $thread->thread_id
         ]);
 
         $response->assertCreated();
-        
         $this->assertEquals(1, $thread->comments->count());
 
-        $comment = $thread->comments[0];
-        $this->assertEquals($user->user_id, $comment->user_id);
-        $this->assertEquals('hello world', $comment->comment);
+        $this->assertDatabaseHas('comments', [
+            'comment' => 'hello world',
+            'user_id' => $user->user_id,
+            'thread_id' => $thread->thread_id
+        ]);
     }
 
     /** @test */
