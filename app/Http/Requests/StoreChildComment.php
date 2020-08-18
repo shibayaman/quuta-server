@@ -25,7 +25,7 @@ class StoreChildComment extends FormRequest
     {
         return [
             'comment' => 'required',
-            'thread_id' => 'required|integer'
+            'thread_id' => 'required|integer|exists:threads,thread_id'
         ];
     }
 }

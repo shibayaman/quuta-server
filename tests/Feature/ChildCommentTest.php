@@ -36,4 +36,18 @@ class ChildCommentTest extends TestCase
         $this->assertEquals($user->user_id, $comment->user_id);
         $this->assertEquals('hello world', $comment->comment);
     }
+
+    /** @test */
+    public function itValidatesIfThreadExistsWhenCreatingComment()
+    {
+        $user = factory(User::class)->create();
+        
+        $response = $this->actingAs($user)->postJson('/api/comment/child', [
+            'comment' => 'thread not exists',
+            'thread_id' => 1234
+        ]);
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors(['thread_id']);
+    }
 }
