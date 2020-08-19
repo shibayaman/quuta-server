@@ -35,4 +35,13 @@ class Thread extends Model
         $this->comment_id = $comment_id;
         $this->save();
     }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($thread) {
+            $thread->comments()->delete();
+        });
+    }
 }

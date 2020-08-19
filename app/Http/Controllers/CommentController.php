@@ -29,6 +29,17 @@ class CommentController extends Controller
         });
     }
 
+    public function deleteParentComment(Comment $comment)
+    {
+        $this->authorize('delete-comment', $comment);
+
+        $thread = Thread::where('comment_id', $comment->comment_id)->first();
+        abort_unless($thread, 422, 'specified comment is not a parent comment');
+
+        $thread->delete();
+        return response()->json(['message' => 'OK'], 200);
+    }
+
     public function storeChildComment(storeChildComment $request)
     {
         $attributes = array_merge($request->validated(), ['user_id' => Auth::id()]);
