@@ -27,4 +27,4 @@ Route::post('/post', 'PostController@storePost');
 Route::post('/image', 'PostController@storeImage');
 Route::post('/comment/parent', 'CommentController@storeParentComment');
 Route::post('/comment/child', 'CommentController@storeChildComment');
-Route::get('/comment/parent/{comment}', 'CommentController@deleteParentComment');
+Route::delete('/comment/{comment}', 'CommentController@delete');

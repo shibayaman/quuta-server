@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreChildComment;
 use App\Http\Requests\StoreParentComment;
 use App\Comment;
+use App\Post;
 use App\Thread;
 use Auth;
 use DB;
@@ -29,20 +30,24 @@ class CommentController extends Controller
         });
     }
 
-    public function deleteParentComment(Comment $comment)
-    {
-        $this->authorize('delete-comment', $comment);
-
-        $thread = Thread::where('comment_id', $comment->comment_id)->first();
-        abort_unless($thread, 422, 'specified comment is not a parent comment');
-
-        $thread->delete();
-        return response()->json(['message' => 'OK'], 200);
-    }
-
     public function storeChildComment(storeChildComment $request)
     {
         $attributes = array_merge($request->validated(), ['user_id' => Auth::id()]);
         return Comment::create($attributes);
+    }
+    
+    public function delete(Comment $comment)
+    {
+        $this->authorize('delete-comment', $comment);
+
+        $thread = Thread::where('comment_id', $comment->comment_id)->first();
+
+        if ($thread) {
+            $thread->delete();
+        } else {
+            $comment->delete();
+        }
+
+        return response()->json(['message' => 'OK'], 200);
     }
 }
