@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreChildComment;
 use App\Http\Requests\StoreParentComment;
 use App\Comment;
-use App\Post;
 use App\Thread;
 use Auth;
 use DB;
@@ -16,6 +15,22 @@ class CommentController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+    }
+
+    public function index(Request $request)
+    {
+        $request->validate(['post_id' => 'required|integer']);
+
+        $commentIds = Thread::where('post_id', $request->post_id)->pluck('comment_id');
+
+        return Comment::whereIn('comment_id', $commentIds)->paginate(20);
+    }
+
+    public function show(Request $request)
+    {
+        $requset->validate(['thread_id' => 'required|integer']);
+
+        return Comment::where('thread_id', $requset->thread_id)->paginate(20);
     }
 
     public function storeParentComment(storeParentComment $request)
