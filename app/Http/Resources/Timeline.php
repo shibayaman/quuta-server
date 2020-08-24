@@ -19,8 +19,8 @@ class Timeline extends JsonResource
             'like_flag' => $this->like_flag,
             'good_count' => $this->good_count,
             'comment_count' => $this->comment_count,
-            'good_flag' => $this->good->isNotEmpty(),
-            'images' => Image::collection($this->image),
+            'good_flag' => $this->goods->isNotEmpty(),
+            'images' => Image::collection($this->images),
             'restaurant' => [
                 'restaurant_id' => $this->restaurant_id,
                 'restaurant_name' => $this->restaurant_name,
