@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\GetTimeline;
-use App\Http\Resources\TimelineCollection;
+use App\Http\Resources\Timeline as TimelineResource;
 use App\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -18,7 +18,7 @@ class TimelineController extends Controller
         $user = \App\User::first();
 
         $posts = $user->homeTimeline($sinceId, $untilId, $count);
-        return new TimelineCollection($posts);
+        return TimelineResource::collection($posts);
     }
 
     public function userTimeline(GetTimeLine $request)
@@ -30,7 +30,7 @@ class TimelineController extends Controller
         $targetUserId = $request->input('user_id') ?? $user->user_id;
 
         $posts = $user->userTimeline($targetUserId, $sinceId, $untilId, $count);
-        return new TimelineCollection($posts);
+        return TimelineResource::collection($posts);
     }
 
     private function destructLimitOptions()
