@@ -51,7 +51,7 @@ class CommentController extends Controller
         return Comment::create($attributes);
     }
     
-    public function delete(Comment $comment)
+    public function destroy(Comment $comment)
     {
         $this->authorize('delete-comment', $comment);
 
