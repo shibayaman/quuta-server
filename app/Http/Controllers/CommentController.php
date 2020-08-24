@@ -23,14 +23,14 @@ class CommentController extends Controller
 
         $commentIds = Thread::where('post_id', $request->post_id)->pluck('comment_id');
 
-        return Comment::whereIn('comment_id', $commentIds)->paginate(20);
+        return Comment::with('user')->whereIn('comment_id', $commentIds)->paginate(20);
     }
 
     public function show(Request $request)
     {
-        $requset->validate(['thread_id' => 'required|integer']);
+        $request->validate(['thread_id' => 'required|integer']);
 
-        return Comment::where('thread_id', $requset->thread_id)->paginate(20);
+        return Comment::with('user')->where('thread_id', $request->thread_id)->paginate(20);
     }
 
     public function storeParentComment(storeParentComment $request)

@@ -14,6 +14,12 @@ class User extends Authenticatable implements JWTSubject
     
     protected $primaryKey = 'user_id';
     protected $keyType = 'string';
+    protected $hidden = [
+        'password',
+        'password_reset_token',
+        'token_expires_at',
+        'password_updated_at'
+    ];
     public $incrementing = false;
 
     public function homeTimeline($sinceId = null, $untilId = null, $count = null)
