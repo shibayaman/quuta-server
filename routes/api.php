@@ -25,3 +25,8 @@ Route::get('/user_timeline', 'TimelineController@userTimeline');
 
 Route::post('/post', 'PostController@storePost');
 Route::post('/image', 'PostController@storeImage');
+Route::post('/comment/parent', 'CommentController@storeParentComment');
+Route::post('/comment/child', 'CommentController@storeChildComment');
+Route::delete('/comment/{comment}', 'CommentController@destroy');
+Route::get('/comment/parent', 'CommentController@index');
+Route::get('/comment/child', 'CommentController@show');
