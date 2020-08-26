@@ -31,4 +31,4 @@ Route::delete('/comment/{comment}', 'CommentController@destroy');
 Route::get('/comment/parent', 'CommentController@index');
 Route::get('/comment/child', 'CommentController@show');
 Route::post('/good', 'GoodController@store');
-Route::delete('/good/{good}', 'GoodController@destroy');
+Route::delete('/good', 'GoodController@destroy');

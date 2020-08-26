@@ -29,9 +29,16 @@ class GoodController extends Controller
         return response()->json(['message' => 'OK'], 200);
     }
 
-    public function destroy(Good $good)
+    public function destroy(Request $request)
     {
-        $this->authorize('delete-good', $good);
+        $request->validate(['post_id' => 'required|integer|exists:posts']);
+
+        $good = Good::where([
+            'post_id' => $request->post_id,
+            'user_id' => Auth::id()
+        ])->first();
+
+        abort_unless($good, 422, 'good does not exists for givven post_id');
 
         DB::transaction(function () use ($good) {
             $good->delete();
