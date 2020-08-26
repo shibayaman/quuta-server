@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Good;
+use App\Observers\GoodObserver;
 use Illuminate\Http\Resources\Json\Resource;
 use Illuminate\Support\ServiceProvider;
 
@@ -25,5 +27,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Resource::withoutWrapping();
+
+        Good::observe(GoodObserver::class);
     }
 }

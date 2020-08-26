@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Good extends Model
 {
     protected $primaryKey = 'good_id';
+    protected $guarded = [];
     public $incrementing = false;
     public $timestamps = false;
 

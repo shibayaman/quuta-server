@@ -55,7 +55,13 @@ class Post extends Model
     {
         $images->each->linkPost($this->post_id);
     }
-    
+
+    public function incrementGoodCount($incrementBy = 1)
+    {
+        $this->good_count += $incrementBy;
+        $this->save();
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
