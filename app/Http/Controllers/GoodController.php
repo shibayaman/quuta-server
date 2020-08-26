@@ -19,12 +19,22 @@ class GoodController extends Controller
 
     public function store(StoreGood $request)
     {
-        //GoodのcreatedフックでPostを更新してるのでここでtransaction開始
         DB::transaction(function () {
             Good::create([
                 'post_id' => request('post_id'),
                 'user_id' => Auth::id()
             ]);
+        });
+
+        return response()->json(['message' => 'OK'], 200);
+    }
+
+    public function destroy(Good $good)
+    {
+        $this->authorize('delete-good', $good);
+
+        DB::transaction(function () use ($good) {
+            $good->delete();
         });
 
         return response()->json(['message' => 'OK'], 200);

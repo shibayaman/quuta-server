@@ -58,10 +58,10 @@ class Post extends Model
 
     public function incrementGoodCount($incrementBy = 1)
     {
-        $this->good_count++;
+        $this->good_count += $incrementBy;
         $this->save();
     }
-    
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');

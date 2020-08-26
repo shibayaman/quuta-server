@@ -28,5 +28,9 @@ class Good extends Model
         static::created(function ($good) {
             $good->post->incrementGoodCount();
         });
+
+        static::deleted(function ($good) {
+            $good->post->incrementGoodCount(-1);
+        });
     }
 }
