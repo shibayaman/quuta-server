@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Good extends Model
 {
     protected $primaryKey = 'good_id';
+    protected $guarded = [];
     public $incrementing = false;
     public $timestamps = false;
 
@@ -18,5 +19,14 @@ class Good extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::created(function ($good) {
+            $good->post->incrementGoodCount();
+        });
     }
 }

@@ -30,3 +30,4 @@ Route::post('/comment/child', 'CommentController@storeChildComment');
 Route::delete('/comment/{comment}', 'CommentController@destroy');
 Route::get('/comment/parent', 'CommentController@index');
 Route::get('/comment/child', 'CommentController@show');
+Route::post('/good', 'GoodController@store');
