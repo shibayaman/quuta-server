@@ -20,17 +20,4 @@ class Good extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
-
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::created(function ($good) {
-            $good->post->incrementGoodCount();
-        });
-
-        static::deleted(function ($good) {
-            $good->post->incrementGoodCount(-1);
-        });
-    }
 }
