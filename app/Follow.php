@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Follow extends Model
 {
     protected $primaryKey = 'follow_id';
+    protected $guarded = [];
     public $timestamps = false;
 
     public function user()

@@ -32,3 +32,4 @@ Route::get('/comment/parent', 'CommentController@index');
 Route::get('/comment/child', 'CommentController@show');
 Route::post('/good', 'GoodController@store');
 Route::delete('/good', 'GoodController@destroy');
+Route::post('/follow', 'FollowController@store');
