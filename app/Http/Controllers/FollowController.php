@@ -12,7 +12,7 @@ class FollowController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth')->except(['followingIndex']);
     }
 
     public function followedIndex(Request $request)
@@ -38,6 +38,20 @@ class FollowController extends Controller
             'follow_user_id' => $request->user_id,
             'subscription_flag' => $request->subscription_flag ?? false
         ]);
+
+        return response()->json(['message' => 'OK'], 200);
+    }
+
+    public function destroy(Request $request)
+    {
+        $request->validate(['user_id' => 'required|exists:users']);
+
+        $follow = Auth::user()->followings()
+            ->where('follow_user_id', $request->user_id)->first();
+
+        abort_unless($follow, 422, 'current user is not following given user');
+
+        $follow->delete();
 
         return response()->json(['message' => 'OK'], 200);
     }

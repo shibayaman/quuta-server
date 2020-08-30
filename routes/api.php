@@ -35,3 +35,4 @@ Route::delete('/good', 'GoodController@destroy');
 Route::post('/follow', 'FollowController@store');
 Route::get('/following', 'FollowController@followingIndex');
 Route::get('/followed', 'FollowController@followedIndex');
+Route::delete('/follow', 'FollowController@destroy');
