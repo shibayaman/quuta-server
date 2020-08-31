@@ -12,7 +12,7 @@ class FollowController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->except(['followingIndex']);
+        $this->middleware('auth');
     }
 
     public function followedIndex(Request $request)
