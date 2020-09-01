@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class User extends JsonResource
+class Follow extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,10 +15,9 @@ class User extends JsonResource
     public function toArray($request)
     {
         return [
-            'user_id' => $this->user_id,
-            'username' => $this->username,
-            'user_icon' => $this->icon_url,
-            'description' => $this->description
+            'followed_user' => new User($this->whenLoaded('user')),
+            'following_user' => new User($this->whenLoaded('follow_user')),
+            'subscription_flag' => $this->subscription_flag
         ];
     }
 }
