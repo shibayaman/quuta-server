@@ -23,6 +23,7 @@ class deleteFollowTest extends TestCase
         ]);
 
         $response = $this->actingAs($user)->deleteJson('/api/follow?user_id=' . $other->user_id);
+        $response->assertNoContent();
         
         $this->assertDeleted($follow);
     }

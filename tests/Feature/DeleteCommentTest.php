@@ -24,7 +24,7 @@ class DeleteCommentTest extends TestCase
         $response = $this->actingAs(User::first())
             ->deleteJson('/api/comment/' . $comment->comment_id);
 
-        $response->assertOk();
+        $response->assertNoContent();
         $this->assertSoftDeleted($comment);
         $this->assertTrue($thread->is(Thread::first()));
     }
@@ -38,7 +38,7 @@ class DeleteCommentTest extends TestCase
         $response = $this->actingAs(User::first())
             ->deleteJson('/api/comment/' . $thread->comment_id);
     
-        $response->assertOk();
+        $response->assertNoContent();
         $this->assertSoftDeleted($thread);
         $this->assertTrue($thread->comments->isEmpty());
     }

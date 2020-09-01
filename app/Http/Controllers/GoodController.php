@@ -44,6 +44,6 @@ class GoodController extends Controller
             $good->delete();
         });
 
-        return response()->json(['message' => 'OK'], 200);
+        return response()->json('', 204);
     }
 }

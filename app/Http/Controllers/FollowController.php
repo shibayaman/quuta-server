@@ -53,6 +53,6 @@ class FollowController extends Controller
 
         $follow->delete();
 
-        return response()->json(['message' => 'OK'], 200);
+        return response()->json('', 204);
     }
 }
