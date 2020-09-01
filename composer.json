@@ -60,6 +60,9 @@
         ],
         "format-check": [
             "composer format -- --dry-run"
+        ],
+        "test": [
+            "phpunit --colors=always"
         ]
     }
 }
