@@ -21,7 +21,8 @@ class storeFollowTest extends TestCase
             'user_id' => $other->user_id,
             'subscription_flag' => true
         ]);
-
+        
+        $response->assertCreated();
         $this->assertDatabaseHas('follows', [
             'user_id' => $user->user_id,
             'follow_user_id' => $other->user_id,

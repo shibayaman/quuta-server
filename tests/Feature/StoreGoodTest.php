@@ -25,7 +25,7 @@ class StoreGoodTest extends TestCase
             'post_id' => $post->post_id
         ]);
 
-        $response->assertOk();
+        $response->assertCreated();
 
         $this->assertDatabaseHas('goods', [
             'user_id' => $user->user_id,

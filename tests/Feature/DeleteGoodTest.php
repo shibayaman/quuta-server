@@ -24,7 +24,7 @@ class DeleteGoodTest extends TestCase
 
         $response = $this->actingAs($user)->deleteJson('/api/good?post_id=' . $post->post_id);
 
-        $response->assertOk();
+        $response->assertNoContent();
         $this->assertDeleted($good);
         
         $this->assertEquals(0, $post->fresh()->good_count);

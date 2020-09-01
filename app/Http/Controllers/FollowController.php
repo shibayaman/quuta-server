@@ -39,7 +39,7 @@ class FollowController extends Controller
             'subscription_flag' => $request->subscription_flag ?? false
         ]);
 
-        return response()->json(['message' => 'OK'], 200);
+        return response()->json(['message' => 'Created'], 201);
     }
 
     public function destroy(Request $request)
@@ -53,6 +53,6 @@ class FollowController extends Controller
 
         $follow->delete();
 
-        return response()->json(['message' => 'OK'], 200);
+        return response()->json('', 204);
     }
 }

@@ -26,7 +26,7 @@ class GoodController extends Controller
             ]);
         });
 
-        return response()->json(['message' => 'OK'], 200);
+        return response()->json(['message' => 'Created'], 201);
     }
 
     public function destroy(Request $request)
@@ -44,6 +44,6 @@ class GoodController extends Controller
             $good->delete();
         });
 
-        return response()->json(['message' => 'OK'], 200);
+        return response()->json('', 204);
     }
 }
