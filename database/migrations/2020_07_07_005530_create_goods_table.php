@@ -23,6 +23,7 @@ class CreateGoodsTable extends Migration
             $table->foreign('user_id')
                 ->references('user_id')->on('users')
                 ->onDelete('cascade');
+            $table->unique(['post_id', 'user_id']);
         });
     }
 

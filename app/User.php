@@ -14,7 +14,39 @@ class User extends Authenticatable implements JWTSubject
     
     protected $primaryKey = 'user_id';
     protected $keyType = 'string';
+    protected $hidden = [
+        'password',
+        'password_reset_token',
+        'token_expires_at',
+        'password_updated_at'
+    ];
     public $incrementing = false;
+
+    public function homeTimeline($sinceId = null, $untilId = null, $count = null)
+    {
+        return $this->getPosts($sinceId, $untilId, $count, function ($query) {
+            $query->whereIn('user_id', $this->followings()->pluck('follow_user_id'));
+        });
+    }
+
+    public function userTimeline($userId, $sinceId = null, $untilId = null, $count = null)
+    {
+        return $this->getPosts($sinceId, $untilId, $count, function ($query) use ($userId) {
+            $query->where('user_id', $userId);
+        });
+    }
+
+    public function getPosts($sinceId, $untilId, $count, callable $callable = null)
+    {
+        $query = Post::getBetween($sinceId, $untilId, $count)
+            ->withGoodedByUser($this->user_id)
+            ->with('images')
+            ->with('user');
+
+        $callable && $callable($query);
+
+        return $query->get();
+    }
 
     public function getJWTIdentifier()
     {
@@ -31,33 +63,38 @@ class User extends Authenticatable implements JWTSubject
         return $this->belongsTo(Sex::class, 'sex_id');
     }
 
-    public function post()
+    public function posts()
     {
         return $this->hasMany(Post::class, 'user_id');
     }
 
-    public function good()
+    public function goods()
     {
         return $this->hasMany(Good::class, 'user_id');
     }
 
-    public function following()
+    public function followings()
     {
         return $this->hasMany(Follow::class, 'user_id');
     }
 
-    public function followed()
+    public function followeds()
     {
         return $this->hasMany(Follow::class, 'follow_user_id');
     }
 
-    public function comment()
+    public function comments()
     {
         return $this->hasMany(Comment::class, 'user_id');
     }
 
-    public function to_go()
+    public function to_goes()
     {
         return $this->hasMany(ToGo::class, 'user_id');
+    }
+    
+    public function images()
+    {
+        return $this->hasMany(Image::class, 'user_id');
     }
 }

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Follow extends Model
 {
     protected $primaryKey = 'follow_id';
+    protected $guarded = [];
     public $timestamps = false;
 
     public function user()
@@ -19,7 +20,7 @@ class Follow extends Model
         return $this->belongsTo(User::class, 'follow_user_id');
     }
     
-    public function post_of_follow_user()
+    public function posts_of_follow_user()
     {
         return $this->hasMany(Post::class, 'user_id', 'follow_user_id');
     }

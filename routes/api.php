@@ -24,3 +24,16 @@ Route::get('/home_timeline', 'TimelineController@homeTimeline');
 Route::get('/user_timeline', 'TimelineController@userTimeline');
 
 Route::get('/rest_search', 'RestaurantSearchController@search');
+Route::post('/post', 'PostController@storePost');
+Route::post('/image', 'PostController@storeImage');
+Route::post('/comment/parent', 'CommentController@storeParentComment');
+Route::post('/comment/child', 'CommentController@storeChildComment');
+Route::delete('/comment/{comment}', 'CommentController@destroy');
+Route::get('/comment/parent', 'CommentController@index');
+Route::get('/comment/child', 'CommentController@show');
+Route::post('/good', 'GoodController@store');
+Route::delete('/good', 'GoodController@destroy');
+Route::post('/follow', 'FollowController@store');
+Route::get('/following', 'FollowController@followingIndex');
+Route::get('/followed', 'FollowController@followedIndex');
+Route::delete('/follow', 'FollowController@destroy');

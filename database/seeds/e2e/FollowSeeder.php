@@ -14,11 +14,11 @@ class FollowSeeder extends Seeder
             $followings = $users->except([$user->user_id])->random(4);
 
             $followings->each(function ($following) use ($user) {
-                $user->following()->save(
+                $user->followings()->save(
                     factory(Follow::class)->make(
                         [
-                        'follow_user_id' => $following->user_id
-                    ]
+                            'follow_user_id' => $following->user_id
+                        ]
                     )
                 );
             });

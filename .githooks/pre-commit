@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "running pre-commit scripts" 
+echo "Running pre-commit scripts" 
 
 if git rev-parse --verify HEAD >/dev/null 2>&1; then
   against=HEAD
@@ -15,12 +15,23 @@ for file in $files; do
   php -l $file
   result=$?
   if [ $result -ne 0 ]; then
+    echo -e "\nAborting commit..."
     exit 1
   fi
 done
 
+echo -e "\nRunning tests..."
+
+test_result=$(composer test)
+if [ $? -ne 0 ]; then
+  echo "$test_result"
+  echo -e "\nAborting commit..."
+  exit 1
+fi
+echo "All tests passed"
+
 if [ -n "$files" ]; then
-  echo "php-cs-fixer runs on" $files
+  echo -e "\nFormatting. php-cs-fixer runs on" $files
   $project_path/vendor/bin/php-cs-fixer fix --config=$project_path/.php_cs.dist $files >/dev/null 2>&1
   git add ${files}
 fi
