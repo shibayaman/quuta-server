@@ -24,7 +24,10 @@ class CommentController extends Controller
 
         $commentIds = Thread::where('post_id', $request->post_id)->pluck('comment_id');
 
-        $comments = Comment::with('user')->whereIn('comment_id', $commentIds)->paginate(20);
+        $comments = Comment::with('user')
+            ->whereIn('comment_id', $commentIds)
+            ->orderBy('thread_id', 'desc')
+            ->paginate(20);
         return CommentResource::collection($comments);
     }
 
@@ -32,7 +35,10 @@ class CommentController extends Controller
     {
         $request->validate(['thread_id' => 'required|integer']);
 
-        $comments = Comment::with('user')->where('thread_id', $request->thread_id)->paginate(20);
+        $comments = Comment::with('user')
+            ->where('thread_id', $request->thread_id)
+            ->orderBy('thread_id')
+            ->paginate(20);
         return CommentResource::collection($comments);
     }
 
