@@ -35,8 +35,11 @@ class CommentController extends Controller
     {
         $request->validate(['thread_id' => 'required|integer']);
 
+        $thread = Thread::find($request->thread_id);
+
         $comments = Comment::with('user')
             ->where('thread_id', $request->thread_id)
+            ->where('comment_id', '>', $thread->comment_id)
             ->orderBy('thread_id')
             ->paginate(20);
         return CommentResource::collection($comments);
