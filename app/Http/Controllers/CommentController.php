@@ -36,6 +36,7 @@ class CommentController extends Controller
         $request->validate(['thread_id' => 'required|integer']);
 
         $thread = Thread::find($request->thread_id);
+        abort_unless($thread, 422, 'thread_id is invalid');
 
         $comments = Comment::with('user')
             ->where('thread_id', $request->thread_id)
