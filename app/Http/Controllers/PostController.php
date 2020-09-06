@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Image;
 use App\Post;
+use App\Services\GurunaviApiService;
 use App\User;
 use App\Http\Requests\StorePost;
 use App\Http\Requests\StoreImage;
@@ -13,9 +14,11 @@ use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
-    public function __construct()
+    private $restaurantApiService;
+    public function __construct(GurunaviApiService $restaurantApiService)
     {
         $this->middleware('auth');
+        $this->restaurantApiService = $restaurantApiService;
     }
 
     public function storePost(StorePost $request)
@@ -25,11 +28,11 @@ class PostController extends Controller
 
         $attributes['user_id'] = Auth::id();
 
-        //restaurant_name & restaurant_addressをぐるなびAPIから取ってくる
-        $attributes['restaurant_name'] = '鳥貴族';
-        $attributes['restaurant_address'] = '〒589-0011 大阪府';
-
         $images = $this->verifyUserCanLinkImages($request->image_ids);
+
+        $restaurant = $this->restaurantApiService->getRestaurant($request->restaurant_id);
+        $attributes['restaurant_name'] = $restaurant['name'];
+        $attributes['restaurant_address'] = $restaurant['address'];
 
         return Post::createAndLinkImage($attributes, $images);
     }

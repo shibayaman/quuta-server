@@ -9,10 +9,18 @@ use GuzzleHttp\Client;
 
 class GurunaviApiService
 {
-    public function searchRestaurant($params)
+    public function searchRestaurants($params)
     {
         $restSearchUrl = config('gurunavi.restSearchUrl');
         return $this->getApiData($restSearchUrl, $params);
+    }
+
+    public function getRestaurant($id)
+    {
+        $response = $this->searchRestaurants([
+            'id' => $id
+        ]);
+        return $response['rest'][0];
     }
 
     public function getAreaMaster()
