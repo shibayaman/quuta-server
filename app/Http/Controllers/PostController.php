@@ -30,9 +30,9 @@ class PostController extends Controller
 
         $images = $this->verifyUserCanLinkImages($request->image_ids);
 
-        $restaurant = $this->restaurantApiService->searchRestaurant(['id' => $request->restaurant_id]);
-        $attributes['restaurant_name'] = $restaurant['rest'][0]['name'];
-        $attributes['restaurant_address'] = $restaurant['rest'][0]['address'];
+        $restaurant = $this->restaurantApiService->getRestaurant($request->restaurant_id);
+        $attributes['restaurant_name'] = $restaurant['name'];
+        $attributes['restaurant_address'] = $restaurant['address'];
 
         return Post::createAndLinkImage($attributes, $images);
     }

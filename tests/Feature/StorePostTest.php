@@ -20,8 +20,8 @@ class StorePostTest extends TestCase
         parent::setUp();
         $this->seed(UserImageSeeder::class);
 
-        $this->mock(GurunaviApiService::class, function ($mock) {
-            $mock->shouldReceive('searchRestaurant')
+        $this->partialMock(GurunaviApiService::class, function ($mock) {
+            $mock->shouldReceive('searchRestaurants')
                 ->with(['id' => 'idOfARestaurant'])
                 ->andReturn([
                     'total_hit_count' => 1,
