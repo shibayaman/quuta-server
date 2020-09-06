@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Image;
 use App\Post;
+use App\Services\GurunaviApiService;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -18,6 +19,20 @@ class StorePostTest extends TestCase
     {
         parent::setUp();
         $this->seed(UserImageSeeder::class);
+
+        $this->mock(GurunaviApiService::class, function ($mock) {
+            $mock->shouldReceive('searchRestaurant')
+                ->with(['id' => 'idOfARestaurant'])
+                ->andReturn([
+                    'total_hit_count' => 1,
+                    'rest' => [
+                        [
+                            'name' => 'name of the restaurant',
+                            'address' => 'address of the building'
+                        ]
+                    ]
+                ]);
+        });
     }
 
     /** @test */
@@ -36,7 +51,13 @@ class StorePostTest extends TestCase
 
         $post = Post::all();
         $this->assertEquals($post->count(), 1);
-        $this->assertEquals($post[0]->user_id, $user->user_id);
+
+        $this->assertDatabaseHas('posts', [
+            'content' => 'this will succeed',
+            'restaurant_id' => 'idOfARestaurant',
+            'restaurant_name' => 'name of the restaurant',
+            'restaurant_address' => 'address of the building'
+        ]);
 
         Image::find($imageIds)->each(function ($image) use ($post) {
             $this->assertEquals($image->post_id, $post[0]->post_id);
