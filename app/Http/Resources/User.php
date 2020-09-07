@@ -18,7 +18,9 @@ class User extends JsonResource
             'user_id' => $this->user_id,
             'username' => $this->username,
             'user_icon' => $this->icon_url,
-            'description' => $this->description
+            'description' => $this->description,
+            'private_flag' => $this->private_flag,
+            'birthday_date' => $this->birthday_date
         ];
     }
 }
