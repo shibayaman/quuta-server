@@ -37,3 +37,4 @@ Route::post('/follow', 'FollowController@store');
 Route::get('/following', 'FollowController@followingIndex');
 Route::get('/followed', 'FollowController@followedIndex');
 Route::delete('/follow', 'FollowController@destroy');
+Route::get('/user/{user}', 'UserController@show');
