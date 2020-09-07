@@ -50,6 +50,14 @@ class PostController extends Controller
         return response()->json(['image_id' => $image->image_id], 201);
     }
 
+    public function destory(Post $post)
+    {
+        $this->authorize('delete-post', $post);
+        $post->delete();
+
+        return response()->noContent();
+    }
+
     private function verifyUserCanLinkImages(array $image_ids)
     {
         $images = Image::find($image_ids);

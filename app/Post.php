@@ -2,16 +2,18 @@
 
 namespace App;
 
+use \Askedio\SoftCascade\Traits\SoftCascadeTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 
 class Post extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, SoftCascadeTrait;
 
     protected $primaryKey = 'post_id';
     protected $guarded = [];
+    protected $softCascade = ['threads@update'];
 
     protected $casts = [
         'like_flag' => 'bool'
