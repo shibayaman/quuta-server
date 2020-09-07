@@ -17,7 +17,7 @@ class RestaurantSearchController extends Controller
 
     public function search(Request $request)
     {
-        $result = $this->restaurantService->searchRestaurant($request->all());
+        $result = $this->restaurantService->searchRestaurants($request->all());
         return $result;
     }
 }
