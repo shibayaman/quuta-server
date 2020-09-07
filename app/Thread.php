@@ -2,15 +2,17 @@
 
 namespace App;
 
+use \Askedio\SoftCascade\Traits\SoftCascadeTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Thread extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, SoftCascadeTrait;
     
     protected $primaryKey = 'thread_id';
     protected $guarded = [];
+    protected $softCascade = ['comments@update'];
     public $timestamps = false;
 
     public function post()
@@ -34,14 +36,5 @@ class Thread extends Model
     {
         $this->comment_id = $comment_id;
         $this->save();
-    }
-
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::deleting(function ($thread) {
-            $thread->comments()->delete();
-        });
     }
 }
