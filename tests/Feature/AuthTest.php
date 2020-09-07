@@ -28,6 +28,7 @@ class AuthTest extends TestCase
         $response->assertStatus(200);
         $response->assertJsonStructure([
             'access_token',
+            'user'
         ]);
     }
 
