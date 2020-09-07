@@ -26,6 +26,7 @@ Route::get('/user_timeline', 'TimelineController@userTimeline');
 Route::get('/rest_search', 'RestaurantSearchController@search');
 Route::post('/post', 'PostController@storePost');
 Route::post('/image', 'PostController@storeImage');
+Route::delete('/post/{post}', 'PostController@destory');
 Route::post('/comment/parent', 'CommentController@storeParentComment');
 Route::post('/comment/child', 'CommentController@storeChildComment');
 Route::delete('/comment/{comment}', 'CommentController@destroy');
