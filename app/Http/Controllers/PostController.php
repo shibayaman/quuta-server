@@ -34,7 +34,9 @@ class PostController extends Controller
         $attributes['restaurant_name'] = $restaurant['name'];
         $attributes['restaurant_address'] = $restaurant['address'];
 
-        return Post::createAndLinkImage($attributes, $images);
+        return DB::transaction(function () use ($attributes, $images) {
+            return Post::createAndLinkImage($attributes, $images);
+        });
     }
 
     public function storeImage(StoreImage $request)

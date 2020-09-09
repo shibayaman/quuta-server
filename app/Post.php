@@ -46,11 +46,9 @@ class Post extends Model
 
     public static function createAndLinkImage($attributes, $images)
     {
-        return DB::transaction(function () use ($attributes, $images) {
-            $post = static::create($attributes);
-            $post->linkImage($images);
-            return $post;
-        });
+        $post = static::create($attributes);
+        $post->linkImage($images);
+        return $post;
     }
 
     public function linkImage($images)
