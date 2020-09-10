@@ -24,19 +24,20 @@ class UserTest extends TestCase
     {
         $users = User::all();
 
-        $this->assertEmpty($users[0]->homeTimeline()->toArray());
+        $this->assertEquals(
+            $users[0]->homeTimeline()->pluck('post_id'),
+            Post::where('user_id', $users[0]->user_id)->pluck('post_id')
+        );
 
         $users[0]->followings()->save(
             factory(Follow::class)->make(['follow_user_id' => $users[1]->user_id])
         );
 
         $posts = $users[0]->homeTimeline();
-        $this->assertEquals(3, $posts->count());
-        
-        $filterd = $posts->filter(function ($post) use ($users) {
-            return $post->user_id === $users[1]->user_id;
-        });
-        $this->assertEquals(3, $filterd->count());
+        $this->assertEquals(
+            $users[0]->homeTimeline()->pluck('post_id'),
+            Post::whereIn('user_id', [$users[0]->user_id, $users[1]->user_id])->pluck('post_id')
+        );
     }
 
     /** @test */

@@ -25,7 +25,9 @@ class User extends Authenticatable implements JWTSubject
     public function homeTimeline($sinceId = null, $untilId = null, $count = null)
     {
         return $this->getPosts($sinceId, $untilId, $count, function ($query) {
-            $query->whereIn('user_id', $this->followings()->pluck('follow_user_id'));
+            $userIds = $this->followings()->pluck('follow_user_id');
+            $userIds[] = $this->user_id;
+            $query->whereIn('user_id', $userIds);
         });
     }
 
