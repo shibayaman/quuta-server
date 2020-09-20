@@ -4,6 +4,7 @@
 
 namespace App\Services;
 
+use App\Exceptions\RestaurantApiException;
 use Illuminate\Database\Eloquent\Model;
 use GuzzleHttp\Client;
 
@@ -41,8 +42,23 @@ class GurunaviApiService
         $params['keyid'] = $apiKey;
         $requestUrl = $baseUrl . $path;
         $client = new Client();
-        $json = $client->request("GET", $requestUrl, ['query' => $params]);
-        return json_decode($json->getBody(), true);
+        $res = $client->request("GET", $requestUrl, [
+            'query' => $params,
+            'http_errors' => false
+        ]);
+
+        $this->validateResponse($res);
+        return json_decode($res->getBody(), true);
+    }
+
+    private function validateResponse($res)
+    {
+        $status = $res->getStatusCode();
+
+        if ($status / 100 !== 2) {
+            $message = json_decode($res->getBody(), false)->error[0]->message;
+            throw new RestaurantApiException($message);
+        }
     }
 
     private function resolveQueryString($params)
