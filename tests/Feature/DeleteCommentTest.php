@@ -40,6 +40,7 @@ class DeleteCommentTest extends TestCase
     
         $response->assertNoContent();
         $this->assertSoftDeleted($thread);
+        $this->assertEquals(2, $thread->post->comment_count);
         $this->assertTrue($thread->comments->isEmpty());
     }
 

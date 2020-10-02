@@ -28,6 +28,9 @@ class ParentCommentTest extends TestCase
         ]);
 
         $response->assertStatus(201);
+
+        $post = $post->fresh();
+        $this->assertEquals(1, $post->comment_count);
         
         $thread = Thread::all();
         $this->assertEquals(1, $thread->count());
