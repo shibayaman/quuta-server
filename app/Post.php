@@ -62,6 +62,12 @@ class Post extends Model
         $this->save();
     }
 
+    public function incrementCommentCount($incrementBy = 1)
+    {
+        $this->comment_count += $incrementBy;
+        $this->save();
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
