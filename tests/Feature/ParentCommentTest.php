@@ -31,16 +31,23 @@ class ParentCommentTest extends TestCase
 
         $post = $post->fresh();
         $this->assertEquals(1, $post->comment_count);
+
+
+        $comment = Comment::first();
         
-        $thread = Thread::all();
-        $this->assertEquals(1, $thread->count());
-        $this->assertEquals($post->post_id, $thread[0]->post_id);
+        $this->assertEquals(1, Thread::count());
+        $this->assertDatabaseHas('threads', [
+            'post_id' => $post->post_id
+        ]);
+
+        $thread = Thread::first();
 
         $this->assertEquals(1, Comment::count());
-
-        $comment = Comment::find($thread[0]->comment_id);
-        $this->assertEquals($user->user_id, $comment->user_id);
-        $this->assertEquals('hello world', $comment->comment);
+        $this->assertDatabaseHas('comments', [
+            'thread_id' => $thread->thread_id,
+            'user_id' => $user->user_id,
+            'comment' => 'hello world'
+        ]);
     }
 
     /** @test */
