@@ -25,6 +25,22 @@ class Thread extends Model
         return $this->hasMany(Comment::class, 'thread_id');
     }
 
+    public function parent_comment()
+    {
+        return $this->belongsTo(Comment::class, 'comment_id');
+    }
+
+    public function scopeWithChildCount($query)
+    {
+        $callback = function ($subQuery) {
+            $subQuery->selectRaw('count(*)')
+                ->from('comments')
+                ->whereRaw('comments.thread_id = threads.thread_id');
+        };
+        
+        $query->addSelect(['child_count' => $callback]);
+    }
+
     public function createParentComment($commentAttributes)
     {
         $comment = $this->comments()->create($commentAttributes);

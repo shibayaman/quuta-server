@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreChildComment;
 use App\Http\Requests\StoreParentComment;
 use App\Http\Resources\Comment as CommentResource;
+use App\Http\Resources\Thread as ThreadResource;
 use App\Comment;
 use App\Thread;
 use Auth;
@@ -22,13 +23,13 @@ class CommentController extends Controller
     {
         $request->validate(['post_id' => 'required|integer']);
 
-        $commentIds = Thread::where('post_id', $request->post_id)->pluck('comment_id');
-
-        $comments = Comment::with('user')
-            ->whereIn('comment_id', $commentIds)
+        $threads = Thread::where('post_id', $request->post_id)
+            ->withChildCount()
+            ->with('parent_comment.user')
             ->orderBy('thread_id', 'desc')
             ->paginate(20);
-        return CommentResource::collection($comments);
+
+        return ThreadResource::collection($threads);
     }
 
     public function show(Request $request)
