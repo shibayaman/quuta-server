@@ -15,7 +15,7 @@ class FollowController extends Controller
         $this->middleware('auth');
     }
 
-    public function followedIndex(Request $request)
+    public function followerIndex(Request $request)
     {
         $request->validate(['user_id' => 'required|exists:users']);
 
