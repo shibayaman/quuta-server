@@ -19,7 +19,7 @@ class FollowController extends Controller
     {
         $request->validate(['user_id' => 'required|exists:users']);
 
-        $follows = Follow::with('user')->where('follow_user_id', $request->user_id)->paginate(20);
+        $follows = Follow::with('follower')->where('follow_user_id', $request->user_id)->paginate(20);
         return FollowResource::collection($follows);
     }
 
@@ -27,7 +27,7 @@ class FollowController extends Controller
     {
         $request->validate(['user_id' => 'required|exists:users']);
 
-        $follows = Follow::with('follow_user')->where('user_id', $request->user_id)->paginate(20);
+        $follows = Follow::with('target_user')->where('user_id', $request->user_id)->paginate(20);
         return FollowResource::collection($follows);
     }
 
