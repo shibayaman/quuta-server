@@ -20,7 +20,13 @@ class User extends JsonResource
             'user_icon' => $this->icon_url,
             'description' => $this->description,
             'private_flag' => $this->private_flag,
-            'birthday_date' => $this->birthday_date
+            'birthday_date' => $this->birthday_date,
+            'isFollowing' => $this->whenLoaded('followers', function () {
+                return $this->followers->isNotEmpty();
+            }),
+            'isFollower' => $this->whenLoaded('followings', function () {
+                return $this->followings->isNotEmpty();
+            })
         ];
     }
 }
