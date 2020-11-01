@@ -15,11 +15,20 @@ class FollowController extends Controller
         $this->middleware('auth');
     }
 
-    public function followedIndex(Request $request)
+    public function followerIndex(Request $request)
     {
         $request->validate(['user_id' => 'required|exists:users']);
 
-        $follows = Follow::with('user')->where('follow_user_id', $request->user_id)->paginate(20);
+        $follows = Follow::where('follow_user_id', $request->user_id)
+            ->with([
+                'follower.followers' => function ($query) {
+                    $query->where('user_id', Auth::id());
+                },
+                'follower.followings' => function ($query) {
+                    $query->where('follow_user_id', Auth::id());
+                }
+            ])->paginate(20);
+
         return FollowResource::collection($follows);
     }
 
@@ -27,7 +36,16 @@ class FollowController extends Controller
     {
         $request->validate(['user_id' => 'required|exists:users']);
 
-        $follows = Follow::with('follow_user')->where('user_id', $request->user_id)->paginate(20);
+        $follows = Follow::where('user_id', $request->user_id)
+            ->with([
+                'target_user.followers' => function ($query) {
+                    $query->where('user_id', Auth::id());
+                },
+                'target_user.followings' => function ($query) {
+                    $query->where('follow_user_id', Auth::id());
+                },
+            ])->paginate(20);
+
         return FollowResource::collection($follows);
     }
 

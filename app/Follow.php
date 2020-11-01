@@ -10,12 +10,12 @@ class Follow extends Model
     protected $guarded = [];
     public $timestamps = false;
 
-    public function user()
+    public function follower()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function follow_user()
+    public function target_user()
     {
         return $this->belongsTo(User::class, 'follow_user_id');
     }

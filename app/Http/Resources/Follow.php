@@ -15,8 +15,8 @@ class Follow extends JsonResource
     public function toArray($request)
     {
         return [
-            'followed_user' => new User($this->whenLoaded('user')),
-            'following_user' => new User($this->whenLoaded('follow_user')),
+            'follower' => new User($this->whenLoaded('follower')),
+            'following_user' => new User($this->whenLoaded('target_user')),
             'subscription_flag' => $this->subscription_flag
         ];
     }
