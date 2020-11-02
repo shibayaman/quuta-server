@@ -1,10 +1,8 @@
 <?php
 
-//ぐるなびからjsonを取得して検索、処理するファイル
-
 namespace App\Services;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Exceptions\RestaurantApiException;
 use GuzzleHttp\Client;
 
 class GurunaviApiService
@@ -17,10 +15,10 @@ class GurunaviApiService
 
     public function getRestaurant($id)
     {
-        $response = $this->searchRestaurants([
+        $res = $this->searchRestaurants([
             'id' => $id
         ]);
-        return $response['rest'][0];
+        return $res['rest'][0];
     }
 
     public function getAreaMaster()
@@ -41,20 +39,22 @@ class GurunaviApiService
         $params['keyid'] = $apiKey;
         $requestUrl = $baseUrl . $path;
         $client = new Client();
-        $json = $client->request("GET", $requestUrl, ['query' => $params]);
-        return json_decode($json->getBody(), true);
+        $res = $client->request("GET", $requestUrl, [
+            'query' => $params,
+            'http_errors' => false
+        ]);
+
+        $this->validateResponse($res);
+        return json_decode($res->getBody(), true);
     }
 
-    private function resolveQueryString($params)
+    private function validateResponse($res)
     {
-        $queryString = '';
+        $status = $res->getStatusCode();
 
-        foreach ($params as $key => $value) {
-            $queryString .= '&' . $key . '=' . $value;
+        if ($status / 100 !== 2) {
+            $message = json_decode($res->getBody(), false)->error[0]->message;
+            throw new RestaurantApiException($message);
         }
-
-        $queryString = substr($queryString, 1);
-
-        return $queryString;
     }
 }
