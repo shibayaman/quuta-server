@@ -56,16 +56,14 @@ class Post extends Model
         $images->each->linkPost($this->post_id);
     }
 
-    public function incrementGoodCount($incrementBy = 1)
+    public function incrementGoodCount($amount = 1)
     {
-        $this->good_count += $incrementBy;
-        $this->save();
+        $this->increment('good_count', $amount);
     }
 
-    public function incrementCommentCount($incrementBy = 1)
+    public function incrementCommentCount($amount = 1)
     {
-        $this->comment_count += $incrementBy;
-        $this->save();
+        $this->increment('comment_count', $amount);
     }
 
     public function user()

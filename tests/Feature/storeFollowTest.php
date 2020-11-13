@@ -13,7 +13,7 @@ class storeFollowTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function itSavesFollow()
+    public function itSavesFollowAndIncrementFollowCountOfUsers()
     {
         [$user, $other] = factory(User::class, 2)->create();
 
@@ -28,6 +28,9 @@ class storeFollowTest extends TestCase
             'follow_user_id' => $other->user_id,
             'subscription_flag' => true
         ]);
+
+        $this->assertEquals(1, $user->fresh()->following_count);
+        $this->assertEquals(1, $other->fresh()->follower_count);
     }
 
     /** @test */

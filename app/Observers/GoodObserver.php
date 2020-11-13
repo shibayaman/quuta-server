@@ -8,11 +8,15 @@ class GoodObserver
 {
     public function created(Good $good)
     {
-        $good->post->incrementGoodCount();
+        $post = $good->post;
+        $post->incrementGoodCount();
+        $post->user->incrementGoodCount();
     }
 
     public function deleted(Good $good)
     {
-        $good->post->incrementGoodCount(-1);
+        $post = $good->post;
+        $post->incrementGoodCount(-1);
+        $post->user->incrementGoodCount(-1);
     }
 }

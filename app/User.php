@@ -50,6 +50,21 @@ class User extends Authenticatable implements JWTSubject
         return $query->get();
     }
 
+    public function incrementGoodCount($amount = 1)
+    {
+        $this->increment('good_count', $amount);
+    }
+
+    public function incrementFollowerCount($amount = 1)
+    {
+        $this->increment('follower_count', $amount);
+    }
+    
+    public function incrementFollowingCount($amount = 1)
+    {
+        $this->increment('following_count', $amount);
+    }
+
     public function getJWTIdentifier()
     {
         return $this->getKey();

@@ -13,7 +13,7 @@ class deleteFollowTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function itDeletesFollow()
+    public function itDeletesFollowAndDecrementFollowCountOfUsers()
     {
         [$user, $other] = factory(User::class, 2)->create();
 
@@ -22,10 +22,16 @@ class deleteFollowTest extends TestCase
             'follow_user_id' => $other->user_id,
         ]);
 
+        $this->assertEquals(1, $user->fresh()->following_count);
+        $this->assertEquals(1, $other->fresh()->follower_count);
+
         $response = $this->actingAs($user)->deleteJson('/api/follow?user_id=' . $other->user_id);
         $response->assertNoContent();
         
         $this->assertDeleted($follow);
+
+        $this->assertEquals(0, $user->fresh()->following_count);
+        $this->assertEquals(0, $other->fresh()->follower_count);
     }
     
     /** @test */
