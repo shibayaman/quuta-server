@@ -15,7 +15,7 @@ class DeleteGoodTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function itDeletesGoodAndDecrementsPostGoodCount()
+    public function itDeletesGoodAndDecrementsCountOfPostAndUser()
     {
         $this->seed(PostGoodSeeder::class);
         $user = User::first();
@@ -28,6 +28,7 @@ class DeleteGoodTest extends TestCase
         $this->assertDeleted($good);
         
         $this->assertEquals(0, $post->fresh()->good_count);
+        $this->assertEquals(0, $user->fresh()->good_count);
     }
 
     public function itValidatesIfGoodBelongsUser()

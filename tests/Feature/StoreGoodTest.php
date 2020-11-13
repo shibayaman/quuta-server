@@ -15,7 +15,7 @@ class StoreGoodTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function itSavesGoodAndIncrementsPostGoodCount()
+    public function itSavesGoodAndIncrementsGoodCountOfPostAndUser()
     {
         $this->seed(UserPostSeeder::class);
         $user = User::first();
@@ -34,6 +34,9 @@ class StoreGoodTest extends TestCase
 
         $post = $post->fresh();
         $this->assertEquals(1, $post->good_count);
+
+        $user = $user->fresh();
+        $this->assertEquals(1, $user->good_count);
     }
 
     /** @test */
