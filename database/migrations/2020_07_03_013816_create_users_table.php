@@ -26,6 +26,9 @@ class CreateUsersTable extends Migration
             $table->string('password_reset_token')->nullable();
             $table->timestamp('token_expires_at')->nullable();
             $table->string('description');
+            $table->unsignedInteger('follower_count')->default(0);
+            $table->unsignedInteger('following_count')->default(0);
+            $table->unsignedInteger('good_count')->default(0);
             $table->timestamps();
             $table->softDeletes();
             $table->primary('user_id');

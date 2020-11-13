@@ -21,6 +21,9 @@ class User extends JsonResource
             'description' => $this->description,
             'private_flag' => $this->private_flag,
             'birthday_date' => $this->birthday_date,
+            'follower_count' => $this->follower_count,
+            'following_count' => $this->following_count,
+            'good_count' => $this->good_count,
             'isFollowing' => $this->whenLoaded('followers', function () {
                 return $this->followers->isNotEmpty();
             }),
