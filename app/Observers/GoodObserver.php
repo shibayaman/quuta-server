@@ -10,13 +10,13 @@ class GoodObserver
     {
         $post = $good->post;
         $post->incrementGoodCount();
-        $post->user->increment('good_count');
+        $post->user->incrementGoodCount();
     }
 
     public function deleted(Good $good)
     {
         $post = $good->post;
         $post->incrementGoodCount(-1);
-        $post->user->decrement('good_count');
+        $post->user->incrementGoodCount(-1);
     }
 }

@@ -8,13 +8,13 @@ class FollowObserver
 {
     public function created(Follow $follow)
     {
-        $follow->follower->increment('following_count');
-        $follow->target_user->increment('follower_count');
+        $follow->follower->incrementFollowingCount();
+        $follow->target_user->incrementFollowerCount();
     }
 
     public function deleted(Follow $follow)
     {
-        $follow->follower->decrement('following_count');
-        $follow->target_user->decrement('follower_count');
+        $follow->follower->incrementFollowingCount(-1);
+        $follow->target_user->incrementFollowerCount(-1);
     }
 }
