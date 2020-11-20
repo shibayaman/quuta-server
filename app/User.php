@@ -38,6 +38,13 @@ class User extends Authenticatable implements JWTSubject
         });
     }
 
+    public function restaurantTimeline($restaurantId, $sinceId = null, $untilId = null, $count = null)
+    {
+        return $this->getPosts($sinceId, $untilId, $count, function ($query) use ($restaurantId) {
+            $query->where('restaurant_id', $restaurantId);
+        });
+    }
+
     public function getPosts($sinceId, $untilId, $count, callable $callable = null)
     {
         $query = Post::getBetween($sinceId, $untilId, $count)

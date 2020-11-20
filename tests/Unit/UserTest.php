@@ -55,6 +55,18 @@ class UserTest extends TestCase
     }
     
     /** @test */
+    public function restaurantTimelineReturnsPostsOfRestaurant()
+    {
+        $user = User::first();
+        $user->posts()->save(factory(Post::class)->make(['restaurant_id' => 'aaa']));
+
+        $posts = $user->restaurantTimeline('aaa');
+
+        $this->assertEquals(1, $posts->count());
+        $this->assertEquals('aaa', $posts[0]->restaurant_id);
+    }
+
+    /** @test */
     public function getPostsLoadsRelations()
     {
         $user = User::first();

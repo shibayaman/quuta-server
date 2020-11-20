@@ -35,6 +35,14 @@ class TimelineController extends Controller
         return TimelineResource::collection($posts);
     }
 
+    public function restaurantTimeline(GetTimeline $request)
+    {
+        [$sinceId, $untilId, $count] = $this->destructLimitOptions($request);
+
+        $posts = Auth::user()->restaurantTimeline($request->restaurant_id, $sinceId, $untilId, $count);
+        return TimelineResource::collection($posts);
+    }
+
     private function destructLimitOptions()
     {
         $request = request();
