@@ -32,6 +32,17 @@ class GurunaviApiService
         return $this->getApiData($gAreaSmallSearchUrl, $params);
     }
 
+    public function getCategoryMaster()
+    {
+        $gCategorySmallUrl = config('gurunavi.categorySmallSearchUrl');
+
+        $params = [
+            'lang' => 'ja',
+        ];
+
+        return $this->getApidata($gCategorySmallUrl, $params);
+    }
+
     private function getApiData($path, $params = [])
     {
         $baseUrl = config('gurunavi.baseUrl');
@@ -53,7 +64,7 @@ class GurunaviApiService
         $status = $res->getStatusCode();
 
         if ($status / 100 !== 2) {
-            $message = json_decode($res->getBody(), false)->error[0]->message;
+            $message = json_decode($res->getBody(), false)->error->message;
             throw new RestaurantApiException($message);
         }
     }
