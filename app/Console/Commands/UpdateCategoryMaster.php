@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\CategorySmallMaster;
+use App\CategoryLargeMaster;
 use Illuminate\Console\Command;
 
 class UpdateCategoryMaster extends Command
@@ -38,7 +38,7 @@ class UpdateCategoryMaster extends Command
      */
     public function handle()
     {
-        $gurunavi = new CategorySmallMaster();
+        $gurunavi = new CategoryLargeMaster();
         $gurunavi->truncateTable();
         $gurunavi->insertTable();
         $this->info('Category master updated successfully');
