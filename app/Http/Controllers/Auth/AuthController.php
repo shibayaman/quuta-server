@@ -13,6 +13,35 @@ class AuthController extends Controller
         $this->middleware('auth')->except(['login']);
     }
 
+    /**
+     * @OA\Post(
+     *  path="/api/auth/login",
+     *  summary="ログイン",
+     *  description="メールアドレスとパスワードでログイン",
+     *  operationId="authLogin",
+     *  tags={"auth"},
+     *  @OA\RequestBody(
+     *      required=true,
+     *      description="認証情報をいれる",
+     *      @OA\JsonContent(
+     *          required={"email","password"},
+     *          @OA\Property(property="email", type="string", example="quuta@quuta.com"),
+     *          @OA\Property(property="password", type="string", format="password", example="quuta12345"),
+     *      ),
+     *  ),
+     *  @OA\Response(
+     *      response=401,
+     *      description="認証情報が間違っている",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="error", type="string", example="Unauthorized"),
+     *      ),
+     *  ),
+     *  @OA\Response(
+     *      response=200,
+     *      description="Success",
+     *  ),
+     * )
+     */
     public function login()
     {
         $credentials = request(['email', 'password']);
