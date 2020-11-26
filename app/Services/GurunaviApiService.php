@@ -34,13 +34,13 @@ class GurunaviApiService
 
     public function getCategoryMaster()
     {
-        $gCategorySmallUrl = config('gurunavi.categorySmallSearchUrl');
+        $gCategoryLargeUrl = config('gurunavi.categoryLargeSearchUrl');
 
         $params = [
             'lang' => 'ja',
         ];
 
-        return $this->getApidata($gCategorySmallUrl, $params);
+        return $this->getApidata($gCategoryLargeUrl, $params);
     }
 
     private function getApiData($path, $params = [])
