@@ -21,6 +21,30 @@ class PostController extends Controller
         $this->restaurantApiService = $restaurantApiService;
     }
 
+    /**
+     * @OA\Post(
+     *  path="/api/post",
+     *  summary="投稿",
+     *  description="新しい投稿をする",
+     *  operationId="storeNewPost",
+     *  tags={"post"},
+     *  security={{"bearer": {}}},
+     *  @OA\RequestBody(ref="#/components/requestBodies/post_store_request_body"),
+     *  @OA\Response(
+     *      response=401,
+     *      description="認証されていない",
+     *  ),
+     *  @OA\Response(
+     *      response=422,
+     *      description="リクエストボディに誤りがある",
+     *  ),
+     *  @OA\Response(
+     *      response=201,
+     *      description="投稿が作成された",
+     *      @OA\MediaType(mediaType="application/json")
+     *  ),
+     * )
+     */
     public function storePost(StorePost $request)
     {
         $attributes = $request->validated();
@@ -39,6 +63,30 @@ class PostController extends Controller
         });
     }
 
+    /**
+     * @OA\Post(
+     *  path="/api/image",
+     *  summary="投稿画像アップロード",
+     *  description="投稿時に使う画像をアップロードする。ここで返却される画像idを使って投稿する。",
+     *  operationId="storeNewImage",
+     *  tags={"post"},
+     *  security={{"bearer": {}}},
+     *  @OA\RequestBody(ref="#/components/requestBodies/post_store_image_request_body"),
+     *  @OA\Response(
+     *      response=401,
+     *      description="認証されていない",
+     *  ),
+     *  @OA\Response(
+     *      response=422,
+     *      description="リクエストボディに誤りがある",
+     *  ),
+     *  @OA\Response(
+     *      response=201,
+     *      description="投稿が作成された",
+     *      @OA\MediaType(mediaType="application/json")
+     *  ),
+     * )
+     */
     public function storeImage(StoreImage $request)
     {
         $path = $request->image->store('public');
@@ -52,6 +100,34 @@ class PostController extends Controller
         return response()->json(['image_id' => $image->image_id], 201);
     }
 
+    /**
+     * @OA\Delete(
+     *  path="/api/post/{id}",
+     *  summary="投稿削除",
+     *  description="投稿を削除する",
+     *  operationId="destoryPost",
+     *  tags={"post"},
+     *  security={{"bearer": {}}},
+     *  @OA\Parameter(ref="#/components/parameters/post_destory_post_id"),
+     *  @OA\Response(
+     *      response=401,
+     *      description="認証されていない",
+     *  ),
+     *  @OA\Response(
+     *      response=403,
+     *      description="ログインユーザに削除できない投稿が指定された",
+     *  ),
+     *  @OA\Response(
+     *      response=422,
+     *      description="リクエストボディに誤りがある",
+     *  ),
+     *  @OA\Response(
+     *      response=204,
+     *      description="投稿が削除された",
+     *      @OA\MediaType(mediaType="application/json"),
+     *  ),
+     * )
+     */
     public function destory(Post $post)
     {
         $this->authorize('delete-post', $post);

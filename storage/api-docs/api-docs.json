@@ -62,6 +62,107 @@
                 }
             }
         },
+        "/api/post": {
+            "post": {
+                "tags": [
+                    "post"
+                ],
+                "summary": "投稿",
+                "description": "新しい投稿をする",
+                "operationId": "storeNewPost",
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/post_store_request_body"
+                },
+                "responses": {
+                    "401": {
+                        "description": "認証されていない"
+                    },
+                    "422": {
+                        "description": "リクエストボディに誤りがある"
+                    },
+                    "201": {
+                        "description": "投稿が作成された",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/image": {
+            "post": {
+                "tags": [
+                    "post"
+                ],
+                "summary": "投稿画像アップロード",
+                "description": "投稿時に使う画像をアップロードする。ここで返却される画像idを使って投稿する。",
+                "operationId": "storeNewImage",
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/post_store_image_request_body"
+                },
+                "responses": {
+                    "401": {
+                        "description": "認証されていない"
+                    },
+                    "422": {
+                        "description": "リクエストボディに誤りがある"
+                    },
+                    "201": {
+                        "description": "投稿が作成された",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/post/{id}": {
+            "delete": {
+                "tags": [
+                    "post"
+                ],
+                "summary": "投稿削除",
+                "description": "投稿を削除する",
+                "operationId": "destoryPost",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/post_destory_post_id"
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "認証されていない"
+                    },
+                    "403": {
+                        "description": "ログインユーザに削除できない投稿が指定された"
+                    },
+                    "422": {
+                        "description": "リクエストボディに誤りがある"
+                    },
+                    "204": {
+                        "description": "投稿が削除された",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
         "/api/home_timeline": {
             "get": {
                 "tags": [
@@ -142,6 +243,12 @@
     },
     "components": {
         "parameters": {
+            "post_destory_post_id": {
+                "name": "id",
+                "in": "path",
+                "description": "削除する投稿のid",
+                "required": true
+            },
             "timeline_get_since_id": {
                 "name": "since_id",
                 "in": "query",
@@ -165,6 +272,69 @@
                 "in": "query",
                 "description": "取得するユーザのid",
                 "required": true
+            }
+        },
+        "requestBodies": {
+            "post_store_request_body": {
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "required": [
+                                "content",
+                                "restaurant_id",
+                                "image_ids"
+                            ],
+                            "properties": {
+                                "content": {
+                                    "description": "投稿の本文",
+                                    "type": "string"
+                                },
+                                "restaurant_id": {
+                                    "description": "投稿が紐づく店舗を表すid",
+                                    "type": "string"
+                                },
+                                "image_ids": {
+                                    "description": "投稿される写真のid。idは事前に画像をアップロードして取得する。",
+                                    "type": "array",
+                                    "items": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "like_flag": {
+                                    "description": "店舗にいいねをつけるかのフラグ",
+                                    "type": "boolean"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "post_store_image_request_body": {
+                "description": "投稿のid、これ以降に投稿された投稿を取得する",
+                "required": true,
+                "content": {
+                    "multipart/form-data": {
+                        "schema": {
+                            "required": [
+                                "image"
+                            ],
+                            "properties": {
+                                "image": {
+                                    "description": "アップロードする画像データ",
+                                    "type": "string",
+                                    "format": "binary"
+                                },
+                                "dish_name": {
+                                    "description": "画像の料理名",
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
             }
         },
         "securitySchemes": {
