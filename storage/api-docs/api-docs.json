@@ -239,6 +239,39 @@
                     }
                 ]
             }
+        },
+        "/api/user/{id}": {
+            "get": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "ユーザ情報取得",
+                "description": "ユーザの登録情報を取得する",
+                "operationId": "getUserInfo",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "取得したいユーザのID"
+                    }
+                ],
+                "responses": {
+                    "404": {
+                        "description": "指定されたユーザが存在しない"
+                    },
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
         }
     },
     "components": {
