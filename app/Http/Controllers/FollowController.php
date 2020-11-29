@@ -15,6 +15,30 @@ class FollowController extends Controller
         $this->middleware('auth');
     }
 
+    /**
+     * @OA\Get(
+     *  path="/api/follower",
+     *  summary="フォロワー取得",
+     *  description="ユーザのフォロワーを一覧取得する",
+     *  operationId="getFollower",
+     *  tags={"user"},
+     *  security={{"bearer": {}}},
+     *  @OA\Parameter(ref="#/components/parameters/user_get_follower_user_id"),
+     *  @OA\Response(
+     *      response=401,
+     *      description="認証されていない",
+     *  ),
+     *  @OA\Response(
+     *      response=422,
+     *      description="クエリパラメタに誤りがある",
+     *  ),
+     *  @OA\Response(
+     *      response=200,
+     *      description="Success",
+     *      @OA\MediaType(mediaType="application/json")
+     *  ),
+     * )
+     */
     public function followerIndex(Request $request)
     {
         $request->validate(['user_id' => 'required|exists:users']);
@@ -32,6 +56,30 @@ class FollowController extends Controller
         return FollowResource::collection($follows);
     }
 
+    /**
+     * @OA\Get(
+     *  path="/api/following",
+     *  summary="フォロー中取得",
+     *  description="ユーザがフォロー中のユーザを一覧取得する",
+     *  operationId="getFollowing",
+     *  tags={"user"},
+     *  security={{"bearer": {}}},
+     *  @OA\Parameter(ref="#/components/parameters/user_get_following_user_id"),
+     *  @OA\Response(
+     *      response=401,
+     *      description="認証されていない",
+     *  ),
+     *  @OA\Response(
+     *      response=422,
+     *      description="クエリパラメタに誤りがある",
+     *  ),
+     *  @OA\Response(
+     *      response=200,
+     *      description="Success",
+     *      @OA\MediaType(mediaType="application/json")
+     *  ),
+     * )
+     */
     public function followingIndex(Request $request)
     {
         $request->validate(['user_id' => 'required|exists:users']);
@@ -49,6 +97,30 @@ class FollowController extends Controller
         return FollowResource::collection($follows);
     }
 
+    /**
+     * @OA\Post(
+     *  path="/api/follow",
+     *  summary="フォロー",
+     *  description="ユーザをフォローする",
+     *  operationId="store_follow",
+     *  tags={"user"},
+     *  security={{"bearer": {}}},
+     *  @OA\RequestBody(ref="#/components/requestBodies/user_store_follow"),
+     *  @OA\Response(
+     *      response=401,
+     *      description="認証されていない",
+     *  ),
+     *  @OA\Response(
+     *      response=422,
+     *      description="リクエストボディに誤りがある",
+     *  ),
+     *  @OA\Response(
+     *      response=201,
+     *      description="フォロー情報が登録された",
+     *      @OA\MediaType(mediaType="application/json")
+     *  ),
+     * )
+     */
     public function store(StoreFollow $request)
     {
         Follow::create([
@@ -60,6 +132,30 @@ class FollowController extends Controller
         return response()->json(['message' => 'Created'], 201);
     }
 
+    /**
+     * @OA\Delete(
+     *  path="/api/follow",
+     *  summary="フォロー解除",
+     *  description="フォローを解除する",
+     *  operationId="destroy_follow",
+     *  tags={"user"},
+     *  security={{"bearer": {}}},
+     *  @OA\Parameter(ref="#/components/parameters/user_destroy_follow"),
+     *  @OA\Response(
+     *      response=401,
+     *      description="認証されていない",
+     *  ),
+     *  @OA\Response(
+     *      response=422,
+     *      description="クエリパラメタに誤りがある",
+     *  ),
+     *  @OA\Response(
+     *      response=201,
+     *      description="フォロー情報が削除された",
+     *      @OA\MediaType(mediaType="application/json")
+     *  ),
+     * )
+     */
     public function destroy(Request $request)
     {
         $request->validate(['user_id' => 'required|exists:users']);
