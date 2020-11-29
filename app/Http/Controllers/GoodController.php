@@ -33,8 +33,8 @@ class GoodController extends Controller
      *      description="リクエストボディに誤りがある",
      *  ),
      *  @OA\Response(
-     *      response=204,
-     *      description="いいねが解除された",
+     *      response=201,
+     *      description="いいねが登録された",
      *      @OA\MediaType(mediaType="application/json")
      *  ),
      * )
@@ -69,8 +69,8 @@ class GoodController extends Controller
      *      description="リクエストボディに誤りがある",
      *  ),
      *  @OA\Response(
-     *      response=201,
-     *      description="いいねが登録された",
+     *      response=204,
+     *      description="いいねが解除された",
      *      @OA\MediaType(mediaType="application/json")
      *  ),
      * )
