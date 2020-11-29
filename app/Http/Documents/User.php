@@ -12,7 +12,7 @@
 
 /**
 * @OA\Parameter(
-*   parameter="user_get_follower",
+*   parameter="user_get_follower_user_id",
 *   name="user_id",
 *   in="query",
 *   required=true,
@@ -22,7 +22,7 @@
 
 /**
 * @OA\Parameter(
-*   parameter="user_get_following",
+*   parameter="user_get_following_user_id",
 *   name="user_id",
 *   in="query",
 *   required=true,

@@ -23,7 +23,7 @@ class FollowController extends Controller
      *  operationId="getFollower",
      *  tags={"user"},
      *  security={{"bearer": {}}},
-     *  @OA\Parameter(ref="#/components/parameters/user_get_follower"),
+     *  @OA\Parameter(ref="#/components/parameters/user_get_follower_user_id"),
      *  @OA\Response(
      *      response=401,
      *      description="認証されていない",
@@ -64,7 +64,7 @@ class FollowController extends Controller
      *  operationId="getFollowing",
      *  tags={"user"},
      *  security={{"bearer": {}}},
-     *  @OA\Parameter(ref="#/components/parameters/user_get_following"),
+     *  @OA\Parameter(ref="#/components/parameters/user_get_following_user_id"),
      *  @OA\Response(
      *      response=401,
      *      description="認証されていない",
