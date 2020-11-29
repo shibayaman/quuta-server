@@ -5,6 +5,7 @@
 *   parameter="user_get_info",
 *   name="id",
 *   in="path",
+*   required=true,
 *   description="取得するユーザのid",
 * ),
 */
