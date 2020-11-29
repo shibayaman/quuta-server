@@ -8,8 +8,6 @@ use Auth;
 use DB;
 use Illuminate\Http\Request;
 
-// use Illuminate\Support\Facades\DB;
-
 class GoodController extends Controller
 {
     public function __construct()
@@ -17,6 +15,30 @@ class GoodController extends Controller
         $this->middleware('auth');
     }
 
+    /**
+     * @OA\Post(
+     *  path="/api/good",
+     *  summary="いいね",
+     *  description="投稿に対していいねをつける",
+     *  operationId="storeGood",
+     *  tags={"good"},
+     *  security={{"bearer": {}}},
+     *  @OA\RequestBody(ref="#/components/requestBodies/good_store"),
+     *  @OA\Response(
+     *      response=401,
+     *      description="認証されていない",
+     *  ),
+     *  @OA\Response(
+     *      response=422,
+     *      description="リクエストボディに誤りがある",
+     *  ),
+     *  @OA\Response(
+     *      response=204,
+     *      description="いいねが解除された",
+     *      @OA\MediaType(mediaType="application/json")
+     *  ),
+     * )
+     */
     public function store(StoreGood $request)
     {
         DB::transaction(function () {
@@ -29,6 +51,30 @@ class GoodController extends Controller
         return response()->json(['message' => 'Created'], 201);
     }
 
+    /**
+     * @OA\Delete(
+     *  path="/api/good",
+     *  summary="いいね解除",
+     *  description="投稿に対していいねを解除する",
+     *  operationId="destroyGood",
+     *  tags={"good"},
+     *  security={{"bearer": {}}},
+     *  @OA\Parameter(ref="#/components/parameters/good_destroy_post_id"),
+     *  @OA\Response(
+     *      response=401,
+     *      description="認証されていない",
+     *  ),
+     *  @OA\Response(
+     *      response=422,
+     *      description="リクエストボディに誤りがある",
+     *  ),
+     *  @OA\Response(
+     *      response=201,
+     *      description="いいねが登録された",
+     *      @OA\MediaType(mediaType="application/json")
+     *  ),
+     * )
+     */
     public function destroy(Request $request)
     {
         $request->validate(['post_id' => 'required|integer|exists:posts']);
