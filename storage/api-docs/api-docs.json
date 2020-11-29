@@ -62,6 +62,138 @@
                 }
             }
         },
+        "/api/follower": {
+            "get": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "フォロワー取得",
+                "description": "ユーザのフォロワーを一覧取得する",
+                "operationId": "getFollower",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/user_get_follower"
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "認証されていない"
+                    },
+                    "422": {
+                        "description": "クエリパラメタに誤りがある"
+                    },
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/following": {
+            "get": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "フォロー中取得",
+                "description": "ユーザがフォロー中のユーザを一覧取得する",
+                "operationId": "getFollowing",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/user_get_following"
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "認証されていない"
+                    },
+                    "422": {
+                        "description": "クエリパラメタに誤りがある"
+                    },
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/follow": {
+            "post": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "フォロー",
+                "description": "ユーザをフォローする",
+                "operationId": "store_follow",
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/user_store_follow"
+                },
+                "responses": {
+                    "401": {
+                        "description": "認証されていない"
+                    },
+                    "422": {
+                        "description": "リクエストボディに誤りがある"
+                    },
+                    "201": {
+                        "description": "フォロー情報が登録された",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "フォロー解除",
+                "description": "フォローを解除する",
+                "operationId": "destroy_follow",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/user_destroy_follow"
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "認証されていない"
+                    },
+                    "422": {
+                        "description": "クエリパラメタに誤りがある"
+                    },
+                    "201": {
+                        "description": "フォロー情報が削除された",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
         "/api/post": {
             "post": {
                 "tags": [
@@ -305,6 +437,29 @@
                 "in": "query",
                 "description": "取得するユーザのid",
                 "required": true
+            },
+            "user_get_info": {
+                "name": "id",
+                "in": "path",
+                "description": "取得するユーザのid"
+            },
+            "user_get_follower": {
+                "name": "user_id",
+                "in": "query",
+                "description": "対象ユーザのid、このユーザのフォロワーを取得する。",
+                "required": true
+            },
+            "user_get_following": {
+                "name": "user_id",
+                "in": "query",
+                "description": "対象ユーザのid、このユーザがフォローしているユーザ取得する。",
+                "required": true
+            },
+            "user_destroy_follow": {
+                "name": "user_id",
+                "in": "query",
+                "description": "削除するユーザのid",
+                "required": true
             }
         },
         "requestBodies": {
@@ -362,6 +517,29 @@
                                 "dish_name": {
                                     "description": "画像の料理名",
                                     "type": "string"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "user_store_follow": {
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "required": [
+                                "user_id"
+                            ],
+                            "properties": {
+                                "user_id": {
+                                    "description": "フォローするユーザのid",
+                                    "type": "string"
+                                },
+                                "subscription_flag": {
+                                    "description": "ユーザのアクションを購読するか",
+                                    "type": "boolean"
                                 }
                             },
                             "type": "object"
