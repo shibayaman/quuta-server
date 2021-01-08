@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Post;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -24,7 +25,7 @@ class User extends Authenticatable implements JWTSubject
 
     public function homeTimeline($sinceId = null, $untilId = null, $count = null)
     {
-        return $this->getPosts($sinceId, $untilId, $count, function ($query) {
+        return Post::getTimeline($sinceId, $untilId, $count, $this->user_id, function ($query) {
             $userIds = $this->followings()->pluck('follow_user_id');
             $userIds[] = $this->user_id;
             $query->whereIn('user_id', $userIds);
@@ -33,28 +34,16 @@ class User extends Authenticatable implements JWTSubject
 
     public function userTimeline($userId, $sinceId = null, $untilId = null, $count = null)
     {
-        return $this->getPosts($sinceId, $untilId, $count, function ($query) use ($userId) {
+        return Post::getTimeline($sinceId, $untilId, $count, $this->user_id, function ($query) use ($userId) {
             $query->where('user_id', $userId);
         });
     }
 
     public function restaurantTimeline($restaurantId, $sinceId = null, $untilId = null, $count = null)
     {
-        return $this->getPosts($sinceId, $untilId, $count, function ($query) use ($restaurantId) {
+        return Post::getTimeline($sinceId, $untilId, $count, $this->user_id, function ($query) use ($restaurantId) {
             $query->where('restaurant_id', $restaurantId);
         });
-    }
-
-    public function getPosts($sinceId, $untilId, $count, callable $callable = null)
-    {
-        $query = Post::getBetween($sinceId, $untilId, $count)
-            ->withGoodedByUser($this->user_id)
-            ->with('images')
-            ->with('user');
-
-        $callable && $callable($query);
-
-        return $query->get();
     }
 
     public function incrementGoodCount($amount = 1)

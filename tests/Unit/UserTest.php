@@ -65,15 +65,4 @@ class UserTest extends TestCase
         $this->assertEquals(1, $posts->count());
         $this->assertEquals('aaa', $posts[0]->restaurant_id);
     }
-
-    /** @test */
-    public function getPostsLoadsRelations()
-    {
-        $user = User::first();
-
-        $post = $user->getPosts(null, null, null)[0];
-        $this->assertTrue($post->relationLoaded('goods'));
-        $this->assertTrue($post->relationLoaded('images'));
-        $this->assertTrue($post->relationLoaded('user'));
-    }
 }

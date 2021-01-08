@@ -59,4 +59,16 @@ class PostTest extends TestCase
         $post = Post::withGoodedByUser($user->user_id)->find($post->getKey());
         $this->assertEquals(1, $post->goods->count());
     }
+
+    /** @test */
+    public function getTimelineLoadsRelations()
+    {
+        $post = Post::getTimeline(null, null, null)[0];
+        $this->assertTrue($post->relationLoaded('images'));
+        $this->assertTrue($post->relationLoaded('user'));
+        $this->assertFalse($post->relationLoaded('goods'));
+
+        $postWithGoods = Post::getTimeline(null, null, null, User::first()->user_id)[0];
+        $this->assertTrue($postWithGoods->relationLoaded('goods'));
+    }
 }

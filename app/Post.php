@@ -44,6 +44,18 @@ class Post extends Model
         }]);
     }
 
+    public static function getTimeline($sinceId, $untilId, $count, $userId = null, $callable = null)
+    {
+        $query = self::getBetween($sinceId, $untilId, $count)
+            ->with('images')
+            ->with('user');
+
+        $userId && $query->withGoodedByUser($userId);
+        $callable && $callable($query);
+
+        return $query->get();
+    }
+
     public static function createAndLinkImage($attributes, $images)
     {
         $post = static::create($attributes);
