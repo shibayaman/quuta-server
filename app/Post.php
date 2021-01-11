@@ -44,16 +44,18 @@ class Post extends Model
         }]);
     }
 
-    public static function getTimeline($sinceId, $untilId, $count, $userId = null, $callable = null)
+    public function scopeWithTimelineRelations($query, $userId = null)
     {
-        $query = self::getBetween($sinceId, $untilId, $count)
-            ->with('images')
+        $query->with('images')
             ->with('user');
 
         $userId && $query->withGoodedByUser($userId);
-        $callable && $callable($query);
+    }
 
-        return $query->get();
+    public function scopeTimeline($query, $sinceId, $untilId, $count = null, $userId = null)
+    {
+        $query->withTimelineRelations($userId)
+            ->getBetween($sinceId, $untilId, $count);
     }
 
     public static function createAndLinkImage($attributes, $images)

@@ -61,14 +61,14 @@ class PostTest extends TestCase
     }
 
     /** @test */
-    public function getTimelineLoadsRelations()
+    public function withTimelineRelationsLoadsRelations()
     {
-        $post = Post::getTimeline(null, null, null)[0];
+        $post = Post::withTimelineRelations()->first();
         $this->assertTrue($post->relationLoaded('images'));
         $this->assertTrue($post->relationLoaded('user'));
         $this->assertFalse($post->relationLoaded('goods'));
 
-        $postWithGoods = Post::getTimeline(null, null, null, User::first()->user_id)[0];
+        $postWithGoods = Post::withTimelineRelations(User::first()->user_id)->first();
         $this->assertTrue($postWithGoods->relationLoaded('goods'));
     }
 }
