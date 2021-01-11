@@ -19,7 +19,7 @@ class Post extends Model
         'like_flag' => 'bool'
     ];
 
-    public function scopeGetBetween($query, $sinceId, $untilId, $count = null)
+    public function scopeIdBetween($query, $sinceId, $untilId, $count = null)
     {
         $keyName = $this->getQualifiedKeyName();
 
@@ -55,7 +55,7 @@ class Post extends Model
     public function scopeTimeline($query, $sinceId, $untilId, $count = null, $userId = null)
     {
         $query->withTimelineRelations($userId)
-            ->getBetween($sinceId, $untilId, $count);
+            ->idBetween($sinceId, $untilId, $count);
     }
 
     public static function createAndLinkImage($attributes, $images)
