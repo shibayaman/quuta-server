@@ -39,3 +39,13 @@
 *   description="取得するユーザのid",
 * ),
 */
+
+/**
+* @OA\Parameter(
+*   parameter="timeline_get_restaurant_id",
+*   name="restaurant_id",
+*   in="query",
+*   required=true,
+*   description="取得するレストランのid",
+* ),
+*/
