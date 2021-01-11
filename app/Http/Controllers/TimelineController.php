@@ -81,6 +81,29 @@ class TimelineController extends Controller
         return TimelineResource::collection($posts);
     }
 
+    /**
+     * @OA\Get(
+     *  path="/api/restaurant_timeline",
+     *  summary="レストランタイムライン取得",
+     *  description="特定のレストランごとの投稿を取得する",
+     *  operationId="getRestaurantTimeline",
+     *  tags={"post"},
+     *  security={{"bearer": {}}},
+     *  @OA\Parameter(ref="#/components/parameters/timeline_get_restaurant_id"),
+     *  @OA\Parameter(ref="#/components/parameters/timeline_get_since_id"),
+     *  @OA\Parameter(ref="#/components/parameters/timeline_get_until_id"),
+     *  @OA\Parameter(ref="#/components/parameters/timeline_get_count"),
+     *  @OA\Response(
+     *      response=401,
+     *      description="認証されていない",
+     *  ),
+     *  @OA\Response(
+     *      response=200,
+     *      description="Success",
+     *      @OA\MediaType(mediaType="application/json")
+     *  ),
+     * )
+     */
     public function restaurantTimeline(GetRestaurantTimeline $request)
     {
         [$sinceId, $untilId, $count] = $this->destructLimitOptions($request);
