@@ -20,24 +20,24 @@ class PostTest extends TestCase
     }
 
     /** @test */
-    public function getBetweenNullsReturnsAllPosts()
+    public function idBetweenNullsReturnsAllPosts()
     {
-        $this->assertEquals(Post::count(), Post::getBetween(null, null)->count());
+        $this->assertEquals(Post::count(), Post::idBetween(null, null)->count());
     }
 
     /** @test */
-    public function getBetweenGetsPostsBetweenGivenIds()
+    public function IdBetweenGetsPostsBetweenGivenIds()
     {
-        $posts = Post::getBetween(2, 7)->get();
+        $posts = Post::idBetween(2, 7)->get();
         $postKeys = $posts->sortBy('post_id')->values()->modelKeys();
 
         $this->assertEquals([3, 4, 5, 6, 7], $posts->modelKeys());
     }
 
     /** @test */
-    public function getBetweenLimitsNumOfPosts()
+    public function idBetweenLimitsNumOfPosts()
     {
-        $posts = Post::getBetween(2, 7, $count = 3)->get();
+        $posts = Post::idBetween(2, 7, $count = 3)->get();
         $postKeys = $posts->sortBy('post_id')->values()->modelKeys();
 
         $this->assertEquals([5, 6, 7], $posts->sortBy('post_id')->values()->modelKeys());
@@ -58,5 +58,17 @@ class PostTest extends TestCase
 
         $post = Post::withGoodedByUser($user->user_id)->find($post->getKey());
         $this->assertEquals(1, $post->goods->count());
+    }
+
+    /** @test */
+    public function withTimelineRelationsLoadsRelations()
+    {
+        $post = Post::withTimelineRelations()->first();
+        $this->assertTrue($post->relationLoaded('images'));
+        $this->assertTrue($post->relationLoaded('user'));
+        $this->assertFalse($post->relationLoaded('goods'));
+
+        $postWithGoods = Post::withTimelineRelations(User::first()->user_id)->first();
+        $this->assertTrue($postWithGoods->relationLoaded('goods'));
     }
 }

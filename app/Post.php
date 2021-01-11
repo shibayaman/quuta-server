@@ -19,7 +19,7 @@ class Post extends Model
         'like_flag' => 'bool'
     ];
 
-    public function scopeGetBetween($query, $sinceId, $untilId, $count = null)
+    public function scopeIdBetween($query, $sinceId, $untilId, $count = null)
     {
         $keyName = $this->getQualifiedKeyName();
 
@@ -42,6 +42,20 @@ class Post extends Model
         $postQuery->with(['goods' => function ($goodQuery) use ($user_id) {
             $goodQuery->where('user_id', $user_id);
         }]);
+    }
+
+    public function scopeWithTimelineRelations($query, $userId = null)
+    {
+        $query->with('images')
+            ->with('user');
+
+        $userId && $query->withGoodedByUser($userId);
+    }
+
+    public function scopeTimeline($query, $sinceId, $untilId, $count = null, $userId = null)
+    {
+        $query->withTimelineRelations($userId)
+            ->idBetween($sinceId, $untilId, $count);
     }
 
     public static function createAndLinkImage($attributes, $images)

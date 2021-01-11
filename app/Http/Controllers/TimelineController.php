@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\GetTimeline;
+use App\Http\Requests\GetRestaurantTimeline;
 use App\Http\Resources\Timeline as TimelineResource;
 use App\Post;
 use Auth;
@@ -77,6 +78,14 @@ class TimelineController extends Controller
         $targetUserId = $request->input('user_id') ?? $user->user_id;
 
         $posts = $user->userTimeline($targetUserId, $sinceId, $untilId, $count);
+        return TimelineResource::collection($posts);
+    }
+
+    public function restaurantTimeline(GetRestaurantTimeline $request)
+    {
+        [$sinceId, $untilId, $count] = $this->destructLimitOptions($request);
+
+        $posts = Auth::user()->restaurantTimeline($request->restaurant_id, $sinceId, $untilId, $count);
         return TimelineResource::collection($posts);
     }
 
