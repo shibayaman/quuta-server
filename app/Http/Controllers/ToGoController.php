@@ -18,6 +18,30 @@ class ToGoController extends Controller
         $this->restaurantApiService = $restaurantApiService;
     }
 
+    /**
+     * @OA\Post(
+     *  path="/api/goto",
+     *  summary="Gotoリストに追加",
+     *  description="新しいレストランをGotoリストに追加する",
+     *  operationId="storeNewPost",
+     *  tags={"goto"},
+     *  security={{"bearer": {}}},
+     *  @OA\RequestBody(ref="#/components/requestBodies/goto_store_request_body"),
+     *  @OA\Response(
+     *      response=401,
+     *      description="認証されていない",
+     *  ),
+     *  @OA\Response(
+     *      response=422,
+     *      description="リクエストボディに誤りがある",
+     *  ),
+     *  @OA\Response(
+     *      response=201,
+     *      description="Gotoリストに追加された",
+     *      @OA\MediaType(mediaType="application/json")
+     *  ),
+     * )
+     */
     public function store(StoreToGo $request)
     {
         $restaurant = $this->restaurantApiService->getRestaurant($request->restaurant_id);
