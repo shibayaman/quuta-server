@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Auth;
 use Illuminate\Database\Eloquent\Model;
 
 class ToGo extends Model
@@ -14,5 +15,13 @@ class ToGo extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'to_go_id');
+    }
+
+    public function resolveRouteBinding($value)
+    {
+        return $this->where([
+            'restaurant_id' => $value,
+            'user_id' => Auth::id()
+        ])->firstOrFail();
     }
 }

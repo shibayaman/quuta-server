@@ -41,3 +41,4 @@ Route::get('/follower', 'FollowController@followerIndex');
 Route::delete('/follow', 'FollowController@destroy');
 Route::get('/user/{user}', 'UserController@show');
 Route::post('/goto', 'ToGoController@store');
+Route::delete('/goto/{toGo}', 'ToGoController@destroy');

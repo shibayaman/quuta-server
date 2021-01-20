@@ -53,4 +53,12 @@ class ToGoController extends Controller
             'user_id' => Auth::id()
         ]);
     }
+
+    public function destroy(ToGO $toGo)
+    {
+        $this->authorize('delete-togo', $toGo);
+        $toGo->delete();
+
+        return response()->json('', 204);
+    }
 }
