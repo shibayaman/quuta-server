@@ -8,6 +8,7 @@ class ToGo extends Model
 {
     protected $table = 'to_goes';
     protected $primaryKey = 'to_go_id';
+    protected $guarded = [];
     public $timestamps = false;
 
     public function user()
