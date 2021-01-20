@@ -54,11 +54,33 @@ class ToGoController extends Controller
         ]);
     }
 
+    /**
+     * @OA\Delete(
+     *  path="/api/goto/{restaurant_id}",
+     *  summary="Gotoリストから削除",
+     *  description="レストレンをGotoリストから削除する",
+     *  operationId="destroyGoto",
+     *  tags={"goto"},
+     *  security={{"bearer": {}}},
+     *  @OA\Parameter(ref="#/components/parameters/goto_destroy_restaurant_id"),
+     *  @OA\Response(
+     *      response=401,
+     *      description="認証されていない",
+     *  ),
+     *  @OA\Response(
+     *      response=404,
+     *      description="ユーザのGotoリストに指定されたレストランが存在しない",
+     *  ),
+     *  @OA\Response(
+     *      response=204,
+     *      description="レストランがGotoリストから削除された",
+     *      @OA\MediaType(mediaType="application/json")
+     *  ),
+     * )
+     */
     public function destroy(ToGO $toGo)
     {
-        $this->authorize('delete-togo', $toGo);
         $toGo->delete();
-
         return response()->json('', 204);
     }
 }

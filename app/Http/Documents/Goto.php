@@ -14,3 +14,13 @@
 *   ),
 * ),
 */
+
+/**
+* @OA\Parameter(
+*   parameter="goto_destroy_restaurant_id",
+*   name="restaurant_id",
+*   in="path",
+*   required=true,
+*   description="Gotoリストから削除するレストランのid",
+* ),
+*/
