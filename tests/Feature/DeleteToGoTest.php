@@ -24,10 +24,8 @@ class DeleteToGoTest extends TestCase
     {
         $user = User::first();
 
-        ToGo::create([
+        factory(ToGo::class)->create([
             'restaurant_id' => 'restaurantToBeDeleted',
-            'latitude' => 1.1,
-            'longitude' => 2.2,
             'user_id' => $user->user_id,
         ]);
 
@@ -36,8 +34,6 @@ class DeleteToGoTest extends TestCase
         $response->assertStatus(204);
         $this->assertDeleted('to_goes', [
             'restaurant_id' => 'restaurantToBeDeleted',
-            'latitude' => 1.1,
-            'longitude' => 2.2,
             'user_id' => $user->user_id,
         ]);
     }
@@ -50,10 +46,8 @@ class DeleteToGoTest extends TestCase
         $response = $this->actingAs($user)->deleteJson('/api/goto/noSuchToGo');
         $response->assertNotFound();
 
-        ToGo::create([
+        factory(ToGo::class)->create([
             'restaurant_id' => 'notMine',
-            'latitude' => 1.1,
-            'longitude' => 2.2,
             'user_id' => $other->user_id,
         ]);
 

@@ -52,10 +52,8 @@ class StoreToGoTest extends TestCase
     {
         $user = User::first();
 
-        ToGo::create([
+        factory(ToGo::class)->create([
             'restaurant_id' => 'duplicateRestaurant',
-            'latitude' => 1.1,
-            'longitude' => 2.2,
             'user_id' => $user->user_id,
         ]);
 
