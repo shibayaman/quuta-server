@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use App\Good;
 use App\Post;
 use App\User;
+use DB;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use UserPostSeeder;
@@ -17,6 +18,17 @@ class PostTest extends TestCase
     {
         parent::setUp();
         $this->seed(UserPostSeeder::class);
+    }
+
+    protected function tearDown(): void
+    {
+        DB::statement('alter table posts auto_increment = 1');
+        parent::tearDownAfterClass();
+    }
+
+    public static function tearDownAfterClass(): void
+    {
+        \Artisan::call('migrate:fresh');
     }
 
     /** @test */

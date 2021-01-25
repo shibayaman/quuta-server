@@ -6,6 +6,7 @@ use App\Http\Requests\StoreToGo;
 use App\ToGo;
 use App\Services\GurunaviApiService;
 use Auth;
+use Grimzy\LaravelMysqlSpatial\Types\Point;
 use Illuminate\Http\Request;
 
 class ToGoController extends Controller
@@ -45,11 +46,9 @@ class ToGoController extends Controller
     public function store(StoreToGo $request)
     {
         $restaurant = $this->restaurantApiService->getRestaurant($request->restaurant_id);
-
         return ToGo::create([
             'restaurant_id' => $request->restaurant_id,
-            'latitude' => $restaurant['latitude'],
-            'longitude' => $restaurant['longitude'],
+            'location' => new Point($restaurant['latitude'], $restaurant['longitude']),
             'user_id' => Auth::id()
         ]);
     }

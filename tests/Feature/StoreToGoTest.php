@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\ToGo;
 use App\User;
 use App\Services\GurunaviApiService;
+use Grimzy\LaravelMysqlSpatial\Types\Point;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -39,12 +40,10 @@ class StoreToGoTest extends TestCase
 
         $response->assertStatus(201);
 
-        $this->assertDatabaseHas('to_goes', [
-            'restaurant_id' => 'idOfARestaurant',
-            'latitude' => 100.000001,
-            'longitude' => 200.000002,
-            'user_id' => $user->user_id
-        ]);
+        $toGo = ToGo::where('restaurant_id', 'idOfARestaurant')->first();
+        $this->assertNotNull($toGo);
+        $this->assertEquals(100.000001, $toGo->location->getLat());
+        $this->assertEquals(200.000002, $toGo->location->getLng());
     }
     
     /** @test */
