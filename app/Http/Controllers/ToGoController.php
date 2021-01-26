@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreToGo;
+use App\Http\Requests\GetToGo;
+use App\Http\Resources\ToGo as ToGoResource;
 use App\ToGo;
 use App\Services\GurunaviApiService;
 use Auth;
@@ -17,6 +19,18 @@ class ToGoController extends Controller
     {
         $this->middleware('auth');
         $this->restaurantApiService = $restaurantApiService;
+    }
+
+    public function index(GetToGo $request)
+    {
+        $query = ToGo::where('user_id', Auth::id());
+
+        if ($request->has(['latitude', 'longitude'])) {
+            $location = new Point($request->latitude, $request->longitude, 4326);
+            $query->distance('location', $location, 1000);
+        }
+
+        return ToGoResource::collection($query->paginate(10));
     }
 
     /**
