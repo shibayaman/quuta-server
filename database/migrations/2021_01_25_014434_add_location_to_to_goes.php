@@ -14,7 +14,7 @@ class AddLocationToToGoes extends Migration
     public function up()
     {
         Schema::table('to_goes', function (Blueprint $table) {
-            $table->point('location');
+            $table->point('location', 4326);
         });
     }
 

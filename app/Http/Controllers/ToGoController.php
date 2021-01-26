@@ -48,7 +48,7 @@ class ToGoController extends Controller
         $restaurant = $this->restaurantApiService->getRestaurant($request->restaurant_id);
         return ToGo::create([
             'restaurant_id' => $request->restaurant_id,
-            'location' => new Point($restaurant['latitude'], $restaurant['longitude']),
+            'location' => new Point($restaurant['latitude'], $restaurant['longitude'], 4326),
             'user_id' => Auth::id()
         ]);
     }

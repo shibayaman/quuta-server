@@ -24,8 +24,8 @@ class StoreToGoTest extends TestCase
             $mock->shouldReceive('getRestaurant')
                 ->with('idOfARestaurant')
                 ->andReturn([
-                    'latitude' => 100.000001,
-                    'longitude' => 200.000002,
+                    'latitude' => 30.000000,
+                    'longitude' => 100.000000,
                 ]);
         });
     }
@@ -42,8 +42,8 @@ class StoreToGoTest extends TestCase
 
         $toGo = ToGo::where('restaurant_id', 'idOfARestaurant')->first();
         $this->assertNotNull($toGo);
-        $this->assertEquals(100.000001, $toGo->location->getLat());
-        $this->assertEquals(200.000002, $toGo->location->getLng());
+        $this->assertEquals(30.000000, $toGo->location->getLat());
+        $this->assertEquals(100.000000, $toGo->location->getLng());
     }
     
     /** @test */
