@@ -72,7 +72,7 @@ class GurunaviApiService
         $status = $res->getStatusCode();
 
         if ($status / 100 !== 2) {
-            $message = json_decode($res->getBody(), false)->error->message;
+            $message = json_decode($res->getBody(), false)->error[0]->message;
             throw new RestaurantApiException($message);
         }
     }
