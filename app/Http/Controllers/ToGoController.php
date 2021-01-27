@@ -21,6 +21,31 @@ class ToGoController extends Controller
         $this->restaurantApiService = $restaurantApiService;
     }
 
+    /**
+     * @OA\Get(
+     *  path="/api/goto",
+     *  summary="Gotoリスト取得",
+     *  description="指定位置の半径1キロ圏内にあるGotoリストに登録されたレストランを取得する(位置指定なしの場合、リストの全てのレストランを返す)",
+     *  operationId="getGoto",
+     *  tags={"goto"},
+     *  security={{"bearer": {}}},
+     *  @OA\Parameter(ref="#/components/parameters/goto_get_latitude"),
+     *  @OA\Parameter(ref="#/components/parameters/goto_get_longitude"),
+     *  @OA\Response(
+     *      response=401,
+     *      description="認証されていない",
+     *  ),
+     *  @OA\Response(
+     *      response=422,
+     *      description="リクエストボディに誤りがある",
+     *  ),
+     *  @OA\Response(
+     *      response=200,
+     *      description="Success",
+     *      @OA\MediaType(mediaType="application/json")
+     *  ),
+     * )
+     */
     public function index(GetToGo $request)
     {
         $query = ToGo::where('user_id', Auth::id());
@@ -43,7 +68,7 @@ class ToGoController extends Controller
      *  path="/api/goto",
      *  summary="Gotoリストに追加",
      *  description="新しいレストランをGotoリストに追加する",
-     *  operationId="storeNewPost",
+     *  operationId="storeNewGoto",
      *  tags={"goto"},
      *  security={{"bearer": {}}},
      *  @OA\RequestBody(ref="#/components/requestBodies/goto_store_request_body"),
