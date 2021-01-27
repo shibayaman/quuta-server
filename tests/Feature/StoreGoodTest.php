@@ -35,8 +35,7 @@ class StoreGoodTest extends TestCase
         $post = $post->fresh();
         $this->assertEquals(1, $post->good_count);
 
-        $user = $user->fresh();
-        $this->assertEquals(1, $user->good_count);
+        $this->assertEquals(1, $post->user->good_count);
     }
 
     /** @test */

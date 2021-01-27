@@ -8,6 +8,7 @@
         "askedio/laravel-soft-cascade": "^6.0",
         "darkaonline/l5-swagger": "6.*",
         "fideloper/proxy": "^4.0",
+        "grimzy/laravel-mysql-spatial": "^3.0",
         "guzzlehttp/guzzle": "^7.0",
         "laravel/framework": "^6.2",
         "laravel/tinker": "^2.0",

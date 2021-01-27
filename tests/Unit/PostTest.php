@@ -5,6 +5,8 @@ namespace Tests\Unit;
 use App\Good;
 use App\Post;
 use App\User;
+use Artisan;
+use DB;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use UserPostSeeder;
@@ -16,6 +18,11 @@ class PostTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+        $this->beforeApplicationDestroyed(function () {
+            DB::statement('alter table posts auto_increment = 1');
+        });
+
         $this->seed(UserPostSeeder::class);
     }
 

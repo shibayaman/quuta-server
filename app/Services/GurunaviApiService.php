@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Exceptions\RestaurantApiException;
 use GuzzleHttp\Client;
+use function GuzzleHttp\Psr7\build_query;
 
 class GurunaviApiService
 {
@@ -48,15 +49,22 @@ class GurunaviApiService
         $baseUrl = config('gurunavi.baseUrl');
         $apiKey = config('gurunavi.key');
         $params['keyid'] = $apiKey;
-        $requestUrl = $baseUrl . $path;
+        $requestUrl = $baseUrl . $path . '?' . $this->buildQUery($params);
+
         $client = new Client();
         $res = $client->request("GET", $requestUrl, [
-            'query' => $params,
             'http_errors' => false
         ]);
 
         $this->validateResponse($res);
         return json_decode($res->getBody(), true);
+    }
+
+    private function buildQuery($params)
+    {
+        $query = build_query($params);
+        $query = str_replace('%2C', ',', $query);
+        return $query;
     }
 
     private function validateResponse($res)
