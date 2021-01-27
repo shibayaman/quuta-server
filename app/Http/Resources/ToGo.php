@@ -16,9 +16,10 @@ class ToGo extends JsonResource
     {
         return [
             'to_go_id' => $this->to_go_id,
-            'restaurant_id' => $this->restaurant_id,
-            'latitude' => $this->location->getLat(),
-            'longitude' => $this->location->getLng()
+            // 'restaurant_id' => $this->restaurant_id,
+            // 'latitude' => $this->location->getLat(),
+            // 'longitude' => $this->location->getLng(),
+            'rest' => $this->restaurant,
         ];
     }
 }

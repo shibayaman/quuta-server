@@ -30,7 +30,11 @@ class ToGoController extends Controller
             $query->distance('location', $location, 1000);
         }
 
-        return ToGoResource::collection($query->paginate(10));
+        //あとでちゃんと書く
+        $toGos = $query->paginate(10);
+        $this->mapRestaurantInfo($toGos->getCollection());
+
+        return ToGoResource::collection($toGos);
     }
 
     /**
@@ -95,5 +99,30 @@ class ToGoController extends Controller
     {
         $toGo->delete();
         return response()->json('', 204);
+    }
+
+    /**
+     * 取得したToGoのデーターでgurunaviApiをたたいてレストラン情報をマッピングする。
+     * プロトタイプの完成を急ぐ必要があるので応急処置的に追加してるメソッド。
+     * restaurantsテーブルを追加する等であとでちゃんとした対応をする。
+     */
+    public function mapRestaurantInfo($toGoCollection)
+    {
+        $restaurantIds = $toGoCollection->pluck('restaurant_id')->all();
+        $restaurants = $this->restaurantApiService->searchRestaurants([
+            'id' => implode(',', $restaurantIds)
+        ])['rest'];
+        $toGoCollection->each(function ($toGo) use ($restaurants) {
+            if (isset($toGo->restaurant)) {
+                return;
+            };
+
+            foreach ($restaurants as $restaurant) {
+                if ($restaurant['id'] === $toGo->restaurant_id) {
+                    $toGo->restaurant = $restaurant;
+                    break;
+                }
+            }
+        });
     }
 }

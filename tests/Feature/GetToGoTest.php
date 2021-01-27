@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\ToGo;
 use App\User;
+use App\Services\GurunaviApiService;
 use Grimzy\LaravelMysqlSpatial\Types\Point;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -16,6 +17,14 @@ class GetToGoTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+        $this->partialMock(GurunaviApiService::class, function ($mock) {
+            $mock->shouldReceive('searchRestaurants')
+                ->with(['id' => 'abc'])
+                ->andReturn([
+                    'rest' => []
+                ]);
+        });
     }
 
     /** @test */
@@ -23,6 +32,7 @@ class GetToGoTest extends TestCase
     {
         $user = factory(User::class)->create();
         $toGo = factory(ToGo::class)->create([
+            'restaurant_id' => 'abc',
             'user_id' => $user->user_id,
             'location' => new Point(10.0, 100.0, 4326)
         ]);
