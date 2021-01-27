@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreToGo;
 use App\Http\Requests\GetToGo;
-use App\Http\Resources\ToGo as ToGoResource;
+use App\Http\Resources\ToGoCollection;
 use App\ToGo;
 use App\Services\GurunaviApiService;
 use Auth;
@@ -34,6 +34,7 @@ class ToGoController extends Controller
         $toGos = $query->paginate(10);
         $this->mapRestaurantInfo($toGos->getCollection());
 
+        return new ToGoCollection($toGos);
         return ToGoResource::collection($toGos);
     }
 
